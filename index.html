@@ -756,7 +756,7 @@
                         <i class="fab fa-viber text-2xl mr-3"></i> <span data-i18n="btn_viber">Viber ဖြင့် ပေးပို့မည်</span>
                     </button>
 
-                    <!-- PDF Button (New) -->
+                    <!-- PDF Button -->
                     <button onclick="downloadPDF()" class="w-full bg-red-600 text-white font-bold text-lg py-3.5 rounded-xl hover:bg-red-700 transition flex items-center justify-center shadow-md">
                         <i class="fas fa-file-pdf text-2xl mr-3"></i> <span data-i18n="btn_pdf">PDF ဒေါင်းလုတ်ရယူမည်</span>
                     </button>
@@ -766,6 +766,12 @@
                     </button>
                 </div>
             </div>
+        </div>
+
+        <!-- Overlay for PDF Generation (Hidden by default) -->
+        <div id="pdfOverlay" class="fixed inset-0 bg-white z-[9999] hidden p-10 font-sans">
+            <!-- This container will be populated and printed -->
+            <div id="pdfContent" class="max-w-[210mm] mx-auto bg-white"></div>
         </div>
 
     </main>
@@ -838,7 +844,6 @@
                 'btn_viber': 'Viber ဖြင့် ပေးပို့မည်',
                 'btn_pdf': 'PDF ဒေါင်းလုတ်ရယူမည်',
                 'btn_close': 'ပိတ်မည်',
-                // New Translations
                 'sub_ui_req': 'UI/UX Design လိုအပ်ချက်များ',
                 'lbl_platform': 'အမျိုးအစား (Platform)',
                 'lbl_screens': 'ခန့်မှန်း Screen အရေအတွက်',
@@ -938,7 +943,6 @@
 
         let currentLang = 'my';
 
-        // 1. Dark Mode Logic
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
             const isDark = document.documentElement.classList.contains('dark');
@@ -956,21 +960,16 @@
             }
         }
 
-        // 2. Auto Save Logic
         function saveProgress() {
             const formData = {
                 clientName: document.getElementById('clientName').value,
                 clientPhone: document.getElementById('clientPhone').value,
                 businessName: document.getElementById('businessName').value,
-                // Checkboxes
                 services: Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value),
-                // Colors
                 color1: document.getElementById('primaryColor').value,
                 color2: document.getElementById('secondaryColor').value,
-                // Sliders
                 style1: document.getElementById('styleRange1').value,
                 style2: document.getElementById('styleRange2').value,
-                // Text Areas & Inputs
                 refSites: document.getElementById('refSites').value,
                 features: document.getElementById('features').value,
                 logoText: document.getElementById('logoText').value,
@@ -981,7 +980,6 @@
                 emailUsers: document.getElementById('emailUsers').value,
                 maintUrl: document.getElementById('maintUrl').value,
                 maintIssue: document.getElementById('maintIssue').value,
-                // Radios
                 logoType: document.querySelector('input[name="logoType"]:checked')?.value,
                 uiPlatform: document.querySelector('input[name="uiPlatform"]:checked')?.value,
                 domainStatus: document.querySelector('input[name="domainStatus"]:checked')?.value,
@@ -997,7 +995,6 @@
             if (savedData) {
                 const data = JSON.parse(savedData);
                 
-                // Restore Text Inputs
                 if(data.clientName) document.getElementById('clientName').value = data.clientName;
                 if(data.clientPhone) document.getElementById('clientPhone').value = data.clientPhone;
                 if(data.businessName) document.getElementById('businessName').value = data.businessName;
@@ -1012,23 +1009,19 @@
                 if(data.maintUrl) document.getElementById('maintUrl').value = data.maintUrl;
                 if(data.maintIssue) document.getElementById('maintIssue').value = data.maintIssue;
 
-                // Restore Colors
                 if(data.color1) document.getElementById('primaryColor').value = data.color1;
                 if(data.color2) document.getElementById('secondaryColor').value = data.color2;
                 updatePreview();
 
-                // Restore Sliders
                 if(data.style1) document.getElementById('styleRange1').value = data.style1;
                 if(data.style2) document.getElementById('styleRange2').value = data.style2;
 
-                // Restore Radios
                 if(data.logoType) checkRadio('logoType', data.logoType);
                 if(data.uiPlatform) checkRadio('uiPlatform', data.uiPlatform);
                 if(data.domainStatus) checkRadio('domainStatus', data.domainStatus);
                 if(data.budget) checkRadio('budget', data.budget);
                 if(data.timeline) checkRadio('timeline', data.timeline);
 
-                // Restore Checkboxes
                 if(data.services) {
                     data.services.forEach(val => {
                         const cb = document.querySelector(`input[name="services"][value="${val}"]`);
@@ -1046,24 +1039,20 @@
             if(radio) radio.checked = true;
         }
 
-        // 3. Progress Bar Logic (IMPROVED)
         function updateProgressBar() {
             let filled = 0;
             let total = 0;
 
-            // 1. Core Fields (Name, Phone)
             const coreIds = ['clientName', 'clientPhone'];
             coreIds.forEach(id => {
                 total++;
                 if(document.getElementById(id).value.trim() !== '') filled++;
             });
 
-            // 2. Services (At least one checked)
             total++;
             const services = document.querySelectorAll('input[name="services"]:checked');
             if(services.length > 0) filled++;
 
-            // 3. Conditional Fields based on selected Services
             const isWeb = document.getElementById('chk-web').checked;
             const isLogo = document.getElementById('chk-logo').checked;
             const isUi = document.getElementById('chk-ui').checked;
@@ -1107,7 +1096,6 @@
                 if(document.getElementById('maintIssue').value.trim() !== '') filled++;
             }
 
-            // 4. General
             total += 2;
             if(document.querySelector('input[name="budget"]:checked')) filled++;
             if(document.querySelector('input[name="timeline"]:checked')) filled++;
@@ -1122,7 +1110,6 @@
             }
         }
 
-        // Attach auto-save to all inputs
         function attachAutoSave() {
             const inputs = document.querySelectorAll('input, textarea, select');
             inputs.forEach(input => {
@@ -1313,81 +1300,153 @@ Form generated by Creative Studio`;
             document.getElementById('resultModal').classList.remove('hidden');
         }
 
-        // 4. Save as PDF Logic (FINAL FIX)
+        // --- UPDATED PDF GENERATION LOGIC ---
         function downloadPDF() {
-            // Get the raw text content
-            const rawText = document.getElementById('finalOutput').innerText;
+            // Show loading cursor
+            document.body.style.cursor = 'wait';
             
-            // Create a temporary container for PDF generation
-            const pdfContainer = document.createElement('div');
-            
-            // Style the container to look like a proper document (A4 size approximation)
-            // Using absolute positioning at top-left but z-index -9999 ensures it's "visible" to the renderer
-            // but hidden behind the main app content.
-            pdfContainer.style.position = 'absolute';
-            pdfContainer.style.left = '0px';
-            pdfContainer.style.top = '0px';
-            pdfContainer.style.zIndex = '-9999'; // Behind everything
-            pdfContainer.style.width = '210mm'; // A4 width
-            pdfContainer.style.maxWidth = '800px';
-            pdfContainer.style.minHeight = '297mm'; // A4 height
-            pdfContainer.style.padding = '20mm';
-            pdfContainer.style.backgroundColor = '#ffffff'; // White paper
-            pdfContainer.style.color = '#000000'; // Black text
-            pdfContainer.style.fontFamily = "'Noto Sans Myanmar', sans-serif"; // Force Burmese font
-            pdfContainer.style.fontSize = '12pt';
-            pdfContainer.style.lineHeight = '1.6';
+            // Scroll to top to prevent cutoff
+            window.scrollTo(0, 0);
 
-            // Convert Markdown-style text to clean HTML for better presentation
-            let htmlContent = rawText
-                // Remove main header from raw text if duplicated
-                .replace(/^📢 .*$/gm, '')
-                // Custom Header
-                .replace(/^/g, '<div style="text-align:center; margin-bottom:30px; border-bottom:2px solid #2563EB; padding-bottom:15px;"><h1 style="color:#2563EB; font-size:24px; margin:0;">Project Requirements</h1><p style="color:#666; font-size:12px; margin-top:5px;">Generated by Creative Studio</p></div>')
-                // Section Headers (Detect lines with bold text or emojis)
-                .replace(/^([^\n]*[^\w\s\-\.][^\n]*)$/gm, (match) => {
-                    if (match.includes('Info:') || match.includes('Services:') || match.includes('Preferences:') || match.includes('Specifics:') || match.includes('Hosting:') || match.includes('Service:') || match.includes('Maintenance:') || match.includes('Timeline:')) {
-                        return `<h3 style="background-color:#F3F4F6; padding:8px 12px; border-radius:6px; color:#1F2937; margin-top:20px; margin-bottom:10px; font-size:16px; font-weight:bold; border-left: 4px solid #2563EB;">${match}</h3>`;
-                    }
-                    return `<div style="font-weight:bold; margin-top:10px;">${match}</div>`; 
-                })
-                // List items
-                .replace(/^- (.*)/gm, '<div style="margin-left:20px; margin-bottom:5px; display:flex; align-items:flex-start;"><span style="color:#2563EB; margin-right:10px; font-size:18px;">•</span><span>$1</span></div>')
-                // Standard text cleanup
-                .replace(/\n/g, '');
-
-            pdfContainer.innerHTML = htmlContent;
+            // 1. Get Values
+            const name = document.getElementById('clientName').value;
+            const phone = document.getElementById('clientPhone').value;
+            const business = document.getElementById('businessName').value || "-";
+            const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value).join(', ');
             
-            // Append to body so html2canvas can see it
-            document.body.appendChild(pdfContainer);
+            // Get Checked Service Booleans
+            const isWeb = document.getElementById('chk-web').checked;
+            const isLogo = document.getElementById('chk-logo').checked;
+            const isUi = document.getElementById('chk-ui').checked;
+            const isDomain = document.getElementById('chk-domain').checked;
+            const isEmail = document.getElementById('chk-email').checked;
+            const isMaint = document.getElementById('chk-maint').checked;
 
-            // PDF Options
-            const opt = {
-                margin:       0, // Margins handled by CSS padding
-                filename:     `Project_Requirements_${new Date().toISOString().slice(0,10)}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { 
-                    scale: 2, 
-                    useCORS: true, 
-                    logging: false,
-                    scrollY: 0, // Critical for avoiding scroll issues
-                    windowWidth: 1024 // Force desktop width for rendering
-                },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
+            // Design Prefs
+            const moods = Array.from(document.querySelectorAll('.mood-btn.active')).map(btn => btn.innerText).join(', ') || "-";
+            const color1 = document.getElementById('primaryColor').value;
+            const color2 = document.getElementById('secondaryColor').value;
             
-            // Slight delay to ensure DOM is rendered before capture
+            const budget = document.querySelector('input[name="budget"]:checked')?.value || "-";
+            const timeline = document.querySelector('input[name="timeline"]:checked')?.value || "-";
+
+            // 2. Build HTML Structure for PDF
+            let detailsHTML = '';
+
+            // Helper to create sections
+            const createSection = (title, content) => `
+                <div style="margin-bottom: 20px;">
+                    <h3 style="background-color: #EFF6FF; color: #1E40AF; padding: 8px 12px; font-size: 16px; font-weight: bold; border-left: 4px solid #2563EB; margin-bottom: 10px;">${title}</h3>
+                    <div style="padding-left: 10px; font-size: 14px; line-height: 1.6; color: #374151;">
+                        ${content}
+                    </div>
+                </div>
+            `;
+
+            // Client Info Section
+            detailsHTML += createSection("Client Information", `
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr><td style="width: 150px; font-weight: bold; padding: 4px 0;">Name:</td><td>${name}</td></tr>
+                    <tr><td style="width: 150px; font-weight: bold; padding: 4px 0;">Phone:</td><td>${phone}</td></tr>
+                    <tr><td style="width: 150px; font-weight: bold; padding: 4px 0;">Business:</td><td>${business}</td></tr>
+                </table>
+            `);
+
+            // Services Section
+            detailsHTML += createSection("Services Needed", `<p>${services}</p>`);
+
+            // Requirements Section
+            let reqContent = '';
+            if (isWeb) {
+                const ref = document.getElementById('refSites').value || "-";
+                const feat = document.getElementById('features').value || "-";
+                reqContent += `<div style="margin-bottom:15px;"><strong>🌐 Website Development:</strong><br>• Refs: ${ref}<br>• Features: ${feat}</div>`;
+            }
+            if (isLogo) {
+                const txt = document.getElementById('logoText').value || "-";
+                const type = document.querySelector('input[name="logoType"]:checked')?.value || "-";
+                reqContent += `<div style="margin-bottom:15px;"><strong>✒️ Logo Design:</strong><br>• Text: ${txt}<br>• Type: ${type}</div>`;
+            }
+            if (isUi) {
+                const plat = document.querySelector('input[name="uiPlatform"]:checked')?.value || "-";
+                const scr = document.getElementById('uiScreens').value || "-";
+                reqContent += `<div style="margin-bottom:15px;"><strong>🎨 UI/UX Design:</strong><br>• Platform: ${plat}<br>• Screens: ${scr}</div>`;
+            }
+            if (isDomain) {
+                const stat = document.querySelector('input[name="domainStatus"]:checked')?.value || "-";
+                const dname = document.getElementById('domainName').value || "-";
+                reqContent += `<div style="margin-bottom:15px;"><strong>☁️ Domain & Hosting:</strong><br>• Status: ${stat}<br>• Name: ${dname}</div>`;
+            }
+            if (isEmail) {
+                const users = document.getElementById('emailUsers').value || "-";
+                reqContent += `<div style="margin-bottom:15px;"><strong>📧 Email Service:</strong><br>• Users: ${users}</div>`;
+            }
+            if (isMaint) {
+                const url = document.getElementById('maintUrl').value || "-";
+                const iss = document.getElementById('maintIssue').value || "-";
+                reqContent += `<div style="margin-bottom:15px;"><strong>🔧 Maintenance:</strong><br>• URL: ${url}<br>• Issue: ${iss}</div>`;
+            }
+            
+            if(reqContent) detailsHTML += createSection("Specific Requirements", reqContent);
+
+            // Design & Colors
+            detailsHTML += createSection("Design Preferences", `
+                <p><strong>Mood:</strong> ${moods}</p>
+                <div style="display: flex; align-items: center; margin-top: 10px;">
+                    <strong style="margin-right: 10px;">Colors:</strong>
+                    <div style="width: 20px; height: 20px; background-color: ${color1}; border: 1px solid #ccc; margin-right: 5px;"></div> Primary
+                    <div style="width: 20px; height: 20px; background-color: ${color2}; border: 1px solid #ccc; margin-left: 15px; margin-right: 5px;"></div> Secondary
+                </div>
+            `);
+
+            // Budget & Timeline
+            detailsHTML += createSection("Planning", `
+                <p><strong>Budget:</strong> ${budget}</p>
+                <p><strong>Timeline:</strong> ${timeline}</p>
+            `);
+
+            // 3. Populate Overlay
+            const overlay = document.getElementById('pdfOverlay');
+            const contentBox = document.getElementById('pdfContent');
+            
+            contentBox.innerHTML = `
+                <div style="padding: 40px; font-family: 'Noto Sans Myanmar', sans-serif;">
+                    <div style="text-align: center; border-bottom: 2px solid #2563EB; padding-bottom: 20px; margin-bottom: 30px;">
+                        <h1 style="color: #2563EB; font-size: 28px; margin: 0; font-weight: bold;">PROJECT INQUIRY FORM</h1>
+                        <p style="color: #6B7280; font-size: 14px; margin-top: 5px;">Generated by MATG TEAMS Creative Studio</p>
+                        <p style="color: #6B7280; font-size: 12px;">Date: ${new Date().toLocaleDateString()}</p>
+                    </div>
+                    ${detailsHTML}
+                </div>
+            `;
+
+            // 4. Show Overlay
+            overlay.classList.remove('hidden');
+
+            // Force reflow
+            void overlay.offsetWidth;
+
+            // 5. Generate PDF with Delay
             setTimeout(() => {
-                html2pdf().set(opt).from(pdfContainer).save().then(() => {
-                    document.body.removeChild(pdfContainer);
+                const opt = {
+                    margin:       [10, 10, 10, 10], // Added margin
+                    filename:     `Project_Brief_${new Date().toISOString().slice(0,10)}.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true, scrollY: 0 }, // Added scrollY: 0
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                html2pdf().set(opt).from(contentBox).save().then(() => {
+                    // Cleanup
+                    overlay.classList.add('hidden');
+                    document.body.style.cursor = 'default';
                 }).catch(err => {
-                    console.error("PDF Error:", err);
-                    alert("PDF ထုတ်ယူမရနိုင်ပါ (Browser Error)။ Screenshot ရိုက်ယူရန် အကြံပြုပါသည်။");
-                    if(document.body.contains(pdfContainer)) {
-                        document.body.removeChild(pdfContainer);
-                    }
+                    console.error(err);
+                    alert("PDF Error. Please try again.");
+                    overlay.classList.add('hidden');
+                    document.body.style.cursor = 'default';
                 });
-            }, 500); // 500ms delay
+            }, 500); // 500ms delay to ensure rendering
         }
 
         function closeModal() {
