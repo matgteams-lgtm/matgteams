@@ -838,6 +838,7 @@
                 'btn_viber': 'Viber ဖြင့် ပေးပို့မည်',
                 'btn_pdf': 'PDF ဒေါင်းလုတ်ရယူမည်',
                 'btn_close': 'ပိတ်မည်',
+                // New Translations
                 'sub_ui_req': 'UI/UX Design လိုအပ်ချက်များ',
                 'lbl_platform': 'အမျိုးအစား (Platform)',
                 'lbl_screens': 'ခန့်မှန်း Screen အရေအတွက်',
@@ -912,6 +913,7 @@
                 'btn_viber': 'Send via Viber',
                 'btn_pdf': 'Download as PDF',
                 'btn_close': 'Close',
+                // New Translations
                 'sub_ui_req': 'UI/UX Design Requirements',
                 'lbl_platform': 'Platform',
                 'lbl_screens': 'Approx. No. of Screens',
@@ -985,9 +987,6 @@
                 domainStatus: document.querySelector('input[name="domainStatus"]:checked')?.value,
                 budget: document.querySelector('input[name="budget"]:checked')?.value,
                 timeline: document.querySelector('input[name="timeline"]:checked')?.value,
-                // Moods (need special handling or simpler approximation, let's skip for simple localStorage or store array)
-                // Storing selected moods involves reading DOM classes which is tricky on restore without complex logic.
-                // For simplicity, we'll auto-save standard inputs.
             };
             localStorage.setItem('projectFormData', JSON.stringify(formData));
             updateProgressBar();
@@ -1047,33 +1046,80 @@
             if(radio) radio.checked = true;
         }
 
-        // 3. Progress Bar Logic
+        // 3. Progress Bar Logic (IMPROVED)
         function updateProgressBar() {
-            const inputs = document.querySelectorAll('input[type="text"], input[type="tel"], textarea, input[type="number"]');
             let filled = 0;
             let total = 0;
 
-            // Only count visible inputs based on logic would be better, but simple count works for demo
-            // Let's count specific core fields + checked services
-            
-            const coreFields = ['clientName', 'clientPhone'];
-            coreFields.forEach(id => {
-                if(document.getElementById(id).value.trim() !== '') filled++;
+            // 1. Core Fields (Name, Phone)
+            const coreIds = ['clientName', 'clientPhone'];
+            coreIds.forEach(id => {
                 total++;
+                if(document.getElementById(id).value.trim() !== '') filled++;
             });
 
-            // Services checked?
+            // 2. Services (At least one checked)
+            total++;
             const services = document.querySelectorAll('input[name="services"]:checked');
             if(services.length > 0) filled++;
-            total++;
 
-            // Budget & Timeline
+            // 3. Conditional Fields based on selected Services
+            const isWeb = document.getElementById('chk-web').checked;
+            const isLogo = document.getElementById('chk-logo').checked;
+            const isUi = document.getElementById('chk-ui').checked;
+            const isDomain = document.getElementById('chk-domain').checked;
+            const isEmail = document.getElementById('chk-email').checked;
+            const isMaint = document.getElementById('chk-maint').checked;
+
+            if (isWeb) {
+                total += 2;
+                if(document.getElementById('refSites').value.trim() !== '') filled++;
+                if(document.getElementById('features').value.trim() !== '') filled++;
+            }
+
+            if (isLogo) {
+                total += 3; 
+                if(document.getElementById('logoText').value.trim() !== '') filled++;
+                if(document.querySelector('input[name="logoType"]:checked')) filled++;
+                if(document.getElementById('targetAudience').value.trim() !== '') filled++;
+            }
+
+            if (isUi) {
+                total += 2;
+                if(document.querySelector('input[name="uiPlatform"]:checked')) filled++;
+                if(document.getElementById('uiScreens').value.trim() !== '') filled++;
+            }
+
+            if (isDomain) {
+                total += 2;
+                if(document.querySelector('input[name="domainStatus"]:checked')) filled++;
+                if(document.getElementById('domainName').value.trim() !== '') filled++;
+            }
+
+            if (isEmail) {
+                total += 1;
+                if(document.getElementById('emailUsers').value.trim() !== '') filled++;
+            }
+
+            if (isMaint) {
+                total += 2;
+                if(document.getElementById('maintUrl').value.trim() !== '') filled++;
+                if(document.getElementById('maintIssue').value.trim() !== '') filled++;
+            }
+
+            // 4. General
             total += 2;
             if(document.querySelector('input[name="budget"]:checked')) filled++;
             if(document.querySelector('input[name="timeline"]:checked')) filled++;
 
-            const pct = Math.round((filled / total) * 100);
-            document.getElementById('progressBar').style.width = pct + '%';
+            const pct = total === 0 ? 0 : Math.round((filled / total) * 100);
+            const bar = document.getElementById('progressBar');
+            bar.style.width = pct + '%';
+            if(pct === 100) {
+                bar.style.backgroundColor = '#10B981';
+            } else {
+                bar.style.backgroundColor = '#F59E0B';
+            }
         }
 
         // Attach auto-save to all inputs
@@ -1087,8 +1133,6 @@
 
         function setLanguage(lang) {
             currentLang = lang;
-            
-            // Update UI Text
             const elements = document.querySelectorAll('[data-i18n]');
             elements.forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -1096,8 +1140,6 @@
                     el.innerText = translations[lang][key];
                 }
             });
-
-            // Update Placeholders
             const inputs = document.querySelectorAll('[data-i18n-ph]');
             inputs.forEach(el => {
                 const key = el.getAttribute('data-i18n-ph');
@@ -1105,33 +1147,26 @@
                     el.placeholder = translations[lang][key];
                 }
             });
-
-            // Update Button Styles
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
         }
 
-        // Toggle Mood Buttons
         function toggleMood(btn) {
             btn.classList.toggle('active');
-            // saveProgress(); // Optional if we want to persist mood
         }
 
-        // Live Color Preview
         function updatePreview() {
             const p = document.getElementById('primaryColor').value;
             const s = document.getElementById('secondaryColor').value;
             const box = document.getElementById('colorPreviewBox');
             const text = document.getElementById('colorPreviewText');
-            
             box.style.backgroundColor = p;
             text.style.color = s;
             saveProgress();
         }
 
-        // Conditional Logic for all services
         function updateFormVisibility() {
             const isWeb = document.getElementById('chk-web').checked;
             const isLogo = document.getElementById('chk-logo').checked;
@@ -1160,16 +1195,11 @@
         }
 
         function generateBrief() {
-            // Get values
             const name = document.getElementById('clientName').value;
             const phone = document.getElementById('clientPhone').value;
             const business = document.getElementById('businessName').value || "-";
+            const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value).join(', ');
             
-            // Get Checkboxes
-            const services = Array.from(document.querySelectorAll('input[name="services"]:checked'))
-                .map(cb => cb.value).join(', ');
-
-            // Check what is selected
             const isWeb = document.getElementById('chk-web').checked;
             const isLogo = document.getElementById('chk-logo').checked;
             const isUi = document.getElementById('chk-ui').checked;
@@ -1177,15 +1207,10 @@
             const isEmail = document.getElementById('chk-email').checked;
             const isMaint = document.getElementById('chk-maint').checked;
 
-            // Get Moods
-            const moods = Array.from(document.querySelectorAll('.mood-btn.active'))
-                .map(btn => btn.innerText).join(', ') || "Not Selected";
-
-            // Colors
+            const moods = Array.from(document.querySelectorAll('.mood-btn.active')).map(btn => btn.innerText).join(', ') || "Not Selected";
             const color1 = document.getElementById('primaryColor').value;
             const color2 = document.getElementById('secondaryColor').value;
 
-            // Sliders
             const s1 = document.getElementById('styleRange1').value;
             let style1 = "Balanced";
             if (s1 == 1) style1 = "Very Minimal"; if (s1 == 2) style1 = "Minimal"; if (s1 == 4) style1 = "Complex"; if (s1 == 5) style1 = "Very Complex";
@@ -1194,14 +1219,10 @@
             let style2 = "Balanced";
             if (s2 == 1) style2 = "Very Modern"; if (s2 == 2) style2 = "Modern"; if (s2 == 4) style2 = "Classic"; if (s2 == 5) style2 = "Very Classic";
 
-            // Common Radio Values
             const budget = document.querySelector('input[name="budget"]:checked')?.value || "Negotiable";
             const timeline = document.querySelector('input[name="timeline"]:checked')?.value || "Normal";
-
-            // Translate output headers
             const inquiryTitle = currentLang === 'en' ? "Project Inquiry" : "လုပ်ငန်း အပ်နှံမှု အကျဉ်းချုပ်";
             
-            // Build Requirement Strings
             let reqs = "";
 
             if (isWeb) {
@@ -1266,7 +1287,6 @@
 `;
             }
 
-            // Generate Final Text
             const text = `📢 **${inquiryTitle}**
 
 👤 **Client Info:**
@@ -1293,22 +1313,45 @@ Form generated by Creative Studio`;
             document.getElementById('resultModal').classList.remove('hidden');
         }
 
-        // 4. Save as PDF Logic
+        // 4. Save as PDF Logic (UPDATED FIX)
         function downloadPDF() {
+            // Create a temporary clone for PDF generation
             const element = document.getElementById('finalOutput');
+            const clone = element.cloneNode(true);
+            
+            // Create a temporary container
+            const container = document.createElement('div');
+            container.appendChild(clone);
+            
+            // Apply specific styles to ensure visibility in PDF
+            clone.style.width = '100%';
+            clone.style.height = 'auto';
+            clone.style.overflow = 'visible';
+            clone.style.whiteSpace = 'pre-wrap';
+            clone.style.color = 'black'; // Force black text
+            clone.style.backgroundColor = 'white'; // Force white background
+            clone.style.padding = '20px';
+            clone.style.fontSize = '14px';
+            clone.style.fontFamily = "'Noto Sans Myanmar', sans-serif"; // Ensure Burmese font is used
+            
+            // Append to body but hidden from view
+            container.style.position = 'absolute';
+            container.style.left = '-9999px';
+            container.style.top = '0';
+            document.body.appendChild(container);
+
             const opt = {
-                margin:       1,
+                margin:       0.5,
                 filename:     'project-requirements.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
             
-            // Visual feedback for user
-            const originalText = element.innerText;
-            // Temporarily style for PDF if needed, but text format is fine.
-            
-            html2pdf().set(opt).from(element).save();
+            // Generate PDF from the clone, then remove it
+            html2pdf().set(opt).from(container).save().then(() => {
+                document.body.removeChild(container);
+            });
         }
 
         function closeModal() {
@@ -1340,9 +1383,9 @@ Form generated by Creative Studio`;
 
         // Initialize visibility on load
         window.onload = function() {
-            loadTheme(); // Load Dark Mode
-            loadProgress(); // Load Saved Data
-            attachAutoSave(); // Start Listeners
+            loadTheme();
+            loadProgress();
+            attachAutoSave();
             updateFormVisibility();
         };
     </script>
