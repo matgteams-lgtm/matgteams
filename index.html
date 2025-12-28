@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="my" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Requirement Form</title>
+    <!-- Web Icon (Favicon) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#111827',
+                            card: '#1F2937',
+                            text: '#F3F4F6',
+                            border: '#374151'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- PDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Pro Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Typography Enhancements */
+        h1, h2, h3, h4 {
+            letter-spacing: -0.025em;
+        }
+
+        /* Custom styles for sliders */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #2563EB;
+            cursor: pointer;
+            margin-top: -10px; 
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+            border: 2px solid white;
+            transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #E5E7EB;
+            border-radius: 4px;
+        }
+        /* Dark mode slider track */
+        .dark input[type=range]::-webkit-slider-runnable-track {
+            background: #4B5563;
+        }
+        
+        /* Checkbox & Radio Card Styles */
+        .selection-input:checked + div {
+            border-color: #2563EB;
+            background-color: #EFF6FF;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1), 0 2px 4px -1px rgba(37, 99, 235, 0.06);
+        }
+        .dark .selection-input:checked + div {
+            background-color: #1e3a8a; /* Darker blue for dark mode */
+            border-color: #3b82f6;
+            color: #e5e7eb;
+        }
+        .selection-input:checked + div .check-icon {
+            display: block;
+        }
+        .selection-input:checked + div .text-gray-500 {
+            color: #1D4ED8;
+        }
+        .dark .selection-input:checked + div .text-gray-500 {
+            color: #93c5fd;
+        }
+        /* Hover effect for cards */
+        .group:hover div {
+            border-color: #93C5FD;
+        }
+        .dark .group:hover div {
+            border-color: #374151;
+        }
+
+        /* Mood Button Styles */
+        .mood-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mood-btn.active {
+            background-color: #EFF6FF;
+            border-color: #2563EB;
+            color: #2563EB;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+        }
+        .dark .mood-btn.active {
+            background-color: #1e3a8a;
+            border-color: #60a5fa;
+            color: #bfdbfe;
+        }
+        .dark .mood-btn {
+            border-color: #4b5563;
+            color: #9ca3af;
+        }
+        .dark .mood-btn:hover {
+            border-color: #60a5fa;
+            color: #60a5fa;
+        }
+
+        /* Form Input Focus Transition */
+        .form-input-group:focus-within {
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Animation for conditional sections */
+        .conditional-section {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            max-height: 1200px;
+            overflow: hidden;
+            transform: translateY(0);
+        }
+        .conditional-section.hidden-section {
+            opacity: 0;
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+            transform: translateY(-10px);
+        }
+
+        /* Language Switcher & Dark Mode Toggle */
+        .control-pill {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(4px);
+            border-radius: 99px;
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .control-btn {
+            padding: 6px 12px;
+            border-radius: 99px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .control-btn.active {
+            background: white;
+            color: #1D4ED8;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Progress Bar */
+        #progressBarContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 100;
+        }
+        #progressBar {
+            height: 100%;
+            background: #F59E0B; /* Amber/Orange for visibility on blue header */
+            width: 0%;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 text-base leading-relaxed dark:bg-dark-bg dark:text-dark-text">
+
+    <!-- Progress Bar -->
+    <div id="progressBarContainer">
+        <div id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-800 to-blue-600 text-white shadow-lg sticky top-0 z-50 dark:from-blue-900 dark:to-gray-900 transition-colors duration-500">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
+                    <i class="fas fa-layer-group text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold leading-tight tracking-tight">MATG TEAMS Creative Studio</h1>
+                    <p class="text-xs md:text-sm text-blue-100 font-medium opacity-90" data-i18n="header_subtitle">Web Design & UI/UX Solutions</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <!-- Dark Mode Toggle -->
+                <button onclick="toggleDarkMode()" class="p-2 rounded-full bg-white/20 hover:bg-white/30 transition backdrop-blur-sm" title="Toggle Dark Mode">
+                    <i id="themeIcon" class="fas fa-moon text-white"></i>
+                </button>
+
+                <!-- Language Switcher -->
+                <div class="control-pill">
+                    <div class="control-btn active lang-btn" onclick="setLanguage('my')">MM</div>
+                    <div class="control-btn lang-btn" onclick="setLanguage('en')">EN</div>
+                </div>
+
+                <a href="tel:+959425287090" class="hidden md:inline-flex items-center text-sm font-semibold bg-white text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-full transition shadow-sm">
+                    <i class="fas fa-phone-alt mr-2"></i> <span data-i18n="contact_btn">ဆက်သွယ်ရန်</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-10 max-w-4xl">
+        
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-3" data-i18n="form_title">လုပ်ငန်း အပ်နှံရန် မေးခွန်းလွှာ</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto" data-i18n="form_desc">သင့်လုပ်ငန်းအတွက် အကောင်းဆုံး ဝန်ဆောင်မှုပေးနိုင်ရန် အောက်ပါ အချက်အလက်လေးများကို ဖြေဆိုပေးပါခင်ဗျာ။</p>
+        </div>
+
+        <form id="projectForm" class="space-y-10" onsubmit="event.preventDefault(); generateBrief();">
+
+            <!-- Section 1: Contact Info -->
+            <div class="bg-white dark:bg-dark-card dark:border-dark-border p-8 rounded-2xl shadow-sm border border-gray-200 transition-colors">
+                <h3 class="text-xl font-bold text-blue-700 dark:text-blue-400 mb-6 border-b border-gray-100 dark:border-gray-700 pb-3 flex items-center">
+                    <i class="fas fa-user-circle mr-3 text-2xl"></i>
+                    <span data-i18n="sec_contact">မိတ်ဆက်</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-base font-semibold text-gray-700 dark:text-gray-300 mb-2" data-i18n="lbl_name">သင့်အမည်</label>
+                        <input type="text" id="clientName" required class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 transition-shadow bg-gray-50 dark:bg-gray-700 dark:text-white focus:bg-white dark:focus:bg-gray-600" placeholder="မောင်မောင်" data-i18n-ph="ph_name">
+                    </div>
+                    <div>
+                        <label class="block text-base font-semibold text-gray-700 dark:text-gray-300 mb-2" data-i18n="lbl_phone">ဖုန်းနံပါတ်</label>
+                        <input type="tel" id="clientPhone" required class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 transition-shadow bg-gray-50 dark:bg-gray-700 dark:text-white focus:bg-white dark:focus:bg-gray-600" placeholder="09xxxxxxxxx">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-base font-semibold text-gray-700 dark:text-gray-300 mb-2" data-i18n="lbl_business">လုပ်ငန်း/ကုမ္ပဏီ အမည်</label>
+                        <input type="text" id="businessName" class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 transition-shadow bg-gray-50 dark:bg-gray-700 dark:text-white focus:bg-white dark:focus:bg-gray-600" placeholder="ဥပမာ - Royal Myanmar Tea" data-i18n-ph="ph_business">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Services Needed -->
+            <div class="bg-white dark:bg-dark-card dark:border-dark-border p-8 rounded-2xl shadow-sm border border-gray-200 transition-colors">
+                <h3 class="text-xl font-bold text-blue-700 dark:text-blue-400 mb-6 border-b border-gray-100 dark:border-gray-700 pb-3 flex items-center">
+                    <i class="fas fa-tools mr-3 text-2xl"></i>
+                    <span data-i18n="sec_services">လိုအပ်သော ဝန်ဆောင်မှုများ</span>
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    
+                    <label class="cursor-pointer relative group">
+                        <input type="checkbox" name="services" value="Web Design & Development" id="chk-web" class="selection-input hidden" onchange="updateFormVisibility(); saveProgress();" checked>
+                        <div class="border-2 border-gray-100 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 h-full flex flex-col items-center justify-center hover:shadow-md dark:hover:border-gray-500">
+                            <i class="fas fa-desktop text-3xl text-gray-400 dark:text-gray-500 mb-3 transition-colors group-hover:text-blue-500 dark:group-hover:text-blue-400"></i>
+                            <span class="text-base font-semibold text-gray-700 dark:text-gray-300" data-i18n="svc_web">Website ရေးဆွဲခြင်း</span>
+                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer relative group">
+                        <input type="checkbox" name="services" value="Logo Design" id="chk-logo" class="selection-input hidden" onchange="updateFormVisibility(); saveProgress();">
+                        <div class="border-2 border-gray-100 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 h-full flex flex-col items-center justify-center hover:shadow-md dark:hover:border-gray-500">
+                            <i class="fas fa-pen-nib text-3xl text-gray-400 dark:text-gray-500 mb-3 transition-colors group-hover:text-blue-500 dark:group-hover:text-blue-400"></i>
+                            <span class="text-base font-semibold text-gray-700 dark:text-gray-300" data-i18n="svc_logo">Logo ဒီဇိုင်း</span>
+                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                        </div>
+                    </label>
+                    
+                    <label class="cursor-pointer relative group">
+                        <input type="checkbox" name="services" value="UI/UX Design" id="chk-ui" class="selection-input hidden" onchange="updateFormVisibility(); saveProgress();">
+                        <div class="border-2 border-gray-100 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 h-full flex flex-col items-center justify-center hover:shadow-md dark:hover:border-gray-500">
+                            <i class="fas fa-paint-brush text-3xl text-gray-400 dark:text-gray-500 mb-3 transition-colors group-hover:text-blue-500 dark:group-hover:text-blue-400"></i>
+                            <span class="text-base font-semibold text-gray-700 dark:text-gray-300">UI/UX Design</span>
+                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer relative group">
+                        <input type="checkbox" name="services" value="Domain & Hosting" id="chk-domain" class="selection-input hidden" onchange="updateFormVisibility(); saveProgress();">
+                        <div class="border-2 border-gray-100 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 h-full flex flex-col items-center justify-center hover:shadow-md dark:hover:border-gray-500">
+                            <i class="fas fa-server text-3xl text-gray-400 dark:text-gray-500 mb-3 transition-colors group-hover:text-blue-500 dark:group-hover:text-blue-400"></i>
+                            <span class="text-base font-semibold text-gray-700 dark:text-gray-300">Domain & Hosting</span>
+                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer relative group">
+                        <input type="checkbox" name="services" value="Company Email" id="chk-email" class="selection-input hidden" onchange="updateFormVisibility(); saveProgress();">
+                        <div class="border-2 border-gray-100 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 h-full flex flex-col items-center justify-center hover:shadow-md dark:hover:border-gray-500">
+                            <i class="fas fa-envelope text-3xl text-gray-400 dark:text-gray-500 mb-3 transition-colors group-hover:text-blue-500 dark:group-hover:text-blue-400"></i>
+                            <span class="text-base font-semibold text-gray-700 dark:text-gray-300">Email Service</span>
+                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer relative group">
+                        <input type="checkbox" name="services" value="Maintenance" id="chk-maint" class="selection-input hidden" onchange="updateFormVisibility(); saveProgress();">
+                        <div class="border-2 border-gray-100 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 h-full flex flex-col items-center justify-center hover:shadow-md dark:hover:border-gray-500">
+                            <i class="fas fa-wrench text-3xl text-gray-400 dark:text-gray-500 mb-3 transition-colors group-hover:text-blue-500 dark:group-hover:text-blue-400"></i>
+                            <span class="text-base font-semibold text-gray-700 dark:text-gray-300" data-i18n="svc_maint">ပြုပြင်ထိန်းသိမ်းခြင်း</span>
+                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Section 3: Design Preferences -->
+            <div class="bg-white dark:bg-dark-card dark:border-dark-border p-8 rounded-2xl shadow-sm border border-gray-200 transition-colors">
+                <h3 class="text-xl font-bold text-blue-700 dark:text-blue-400 mb-8 border-b border-gray-100 dark:border-gray-700 pb-3 flex items-center">
+                    <i class="fas fa-palette mr-3 text-2xl"></i>
+                    <span data-i18n="sec_design">ဒီဇိုင်းနှင့် အရောင် (Design & Style)</span>
+                </h3>
+                
+                <!-- Brand Mood -->
+                <div class="mb-8">
+                    <label class="block text-base font-bold text-gray-800 dark:text-gray-200 mb-4" data-i18n="lbl_mood">သင့် Brand ၏ ပုံရိပ် (Mood)</label>
+                    <div class="flex flex-wrap gap-3" id="moodTags">
+                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Professional">Professional</button>
+                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Playful">Playful</button>
+                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Luxury">Luxury</button>
+                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Minimal">Minimal</button>
+                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Modern">Modern</button>
+                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Traditional">Traditional</button>
+                    </div>
+                </div>
+
+                <!-- Colors with Visual Preview -->
+                <div class="mb-10 bg-gray-50 dark:bg-gray-800 p-6 rounded-xl border border-dashed border-gray-300 dark:border-gray-600">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-base font-bold text-gray-800 dark:text-gray-200 mb-4" data-i18n="lbl_colors">Brand အရောင်များ ရွေးရန်</label>
+                            <div class="flex items-center space-x-8">
+                                <div class="flex flex-col items-center group cursor-pointer relative">
+                                    <div class="w-16 h-16 rounded-full shadow-lg overflow-hidden ring-4 ring-white dark:ring-gray-600 hover:ring-blue-200 transition bg-white">
+                                        <input type="color" id="primaryColor" value="#2563EB" class="w-24 h-24 -m-4 cursor-pointer opacity-100" onchange="updatePreview()">
+                                    </div>
+                                    <span class="text-sm font-semibold mt-3 text-gray-600 dark:text-gray-400 uppercase tracking-wide">Primary</span>
+                                </div>
+                                
+                                <div class="flex flex-col items-center group cursor-pointer relative">
+                                    <div class="w-16 h-16 rounded-full shadow-lg overflow-hidden ring-4 ring-white dark:ring-gray-600 hover:ring-blue-200 transition bg-white">
+                                        <input type="color" id="secondaryColor" value="#ffffff" class="w-24 h-24 -m-4 cursor-pointer opacity-100" onchange="updatePreview()">
+                                    </div>
+                                    <span class="text-sm font-semibold mt-3 text-gray-600 dark:text-gray-400 uppercase tracking-wide">Secondary</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Preview Card -->
+                        <div>
+                            <label class="block text-base font-bold text-gray-800 dark:text-gray-200 mb-4" data-i18n="lbl_preview">နမူနာ (Preview)</label>
+                            <div id="colorPreviewBox" class="w-full h-24 rounded-xl shadow-md flex items-center justify-center transition-colors duration-300" style="background-color: #2563EB;">
+                                <div class="bg-white/20 backdrop-blur-md px-6 py-3 rounded-lg border border-white/20 shadow-sm">
+                                    <span id="colorPreviewText" class="font-bold text-xl" style="color: #ffffff;">Your Brand Name</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sliders -->
+                <div>
+                    <label class="block text-base font-bold text-gray-800 dark:text-gray-200 mb-8" data-i18n="lbl_style_balance">Design Style Balance</label>
+                    <div class="space-y-10 px-2">
+                        <!-- Slider 1 -->
+                        <div class="relative">
+                            <div class="flex justify-between text-sm font-bold text-gray-600 dark:text-gray-400 mb-3">
+                                <span class="flex items-center"><i class="fas fa-minus-circle mr-2 text-blue-500"></i> <span data-i18n="st_minimal">Minimal</span></span>
+                                <span class="flex items-center"><span data-i18n="st_complex">Complex</span> <i class="fas fa-th-large ml-2 text-blue-500"></i></span>
+                            </div>
+                            <input type="range" id="styleRange1" min="1" max="5" value="3" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="saveProgress()">
+                            <div class="flex justify-between text-sm text-gray-400 mt-2 font-mono font-medium px-1">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                            </div>
+                        </div>
+                        <!-- Slider 2 -->
+                        <div class="relative">
+                            <div class="flex justify-between text-sm font-bold text-gray-600 dark:text-gray-400 mb-3">
+                                <span class="flex items-center"><i class="fas fa-rocket mr-2 text-blue-500"></i> <span data-i18n="st_modern">Modern</span></span>
+                                <span class="flex items-center"><span data-i18n="st_classic">Classic</span> <i class="fas fa-landmark ml-2 text-blue-500"></i></span>
+                            </div>
+                            <input type="range" id="styleRange2" min="1" max="5" value="2" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="saveProgress()">
+                            <div class="flex justify-between text-sm text-gray-400 mt-2 font-mono font-medium px-1">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Project Details -->
+            <div class="bg-white dark:bg-dark-card dark:border-dark-border p-8 rounded-2xl shadow-sm border border-gray-200 transition-colors">
+                <h3 class="text-xl font-bold text-blue-700 dark:text-blue-400 mb-6 border-b border-gray-100 dark:border-gray-700 pb-3 flex items-center">
+                    <i class="fas fa-list-ul mr-3 text-2xl"></i>
+                    <span data-i18n="sec_details">အသေးစိတ် အချက်အလက်များ (Details)</span>
+                </h3>
+                
+                <div class="space-y-8">
+
+                    <!-- Web Specific Questions -->
+                    <div id="webSpecifics" class="conditional-section">
+                        <h4 class="text-base font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-5 border-l-4 border-blue-500 pl-3" data-i18n="sub_web_req">Website လိုအပ်ချက်များ</h4>
+                        
+                        <div class="space-y-5">
+                            <!-- Reference Sites -->
+                            <div class="form-input-group border border-gray-200 dark:border-gray-600 rounded-xl p-4 transition-colors bg-white dark:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-2 flex items-center">
+                                    <i class="fas fa-link text-blue-500 mr-2.5 bg-blue-50 dark:bg-gray-600 p-2 rounded-lg"></i> 
+                                    <span data-i18n="lbl_ref">နမူနာ Website များ (Reference Sites)</span>
+                                </label>
+                                <textarea id="refSites" rows="3" class="w-full px-3 py-2 text-base text-gray-700 dark:text-gray-200 bg-transparent resize-none placeholder-gray-400" placeholder="ကြိုက်နှစ်သက်တဲ့ Website link (သို့) Facebook page link များကို ထည့်ပေးပါ..." data-i18n-ph="ph_ref"></textarea>
+                            </div>
+
+                            <!-- Features -->
+                            <div class="form-input-group border border-gray-200 dark:border-gray-600 rounded-xl p-4 transition-colors bg-white dark:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-2 flex items-center">
+                                    <i class="fas fa-cubes text-blue-500 mr-2.5 bg-blue-50 dark:bg-gray-600 p-2 rounded-lg"></i> 
+                                    <span data-i18n="lbl_features">Website တွင် ပါဝင်စေချင်သော အခန်းကဏ္ဍများ</span>
+                                </label>
+                                <textarea id="features" rows="3" class="w-full px-3 py-2 text-base text-gray-700 dark:text-gray-200 bg-transparent resize-none placeholder-gray-400" placeholder="ဥပမာ - Home, About Us, ဝန်ဆောင်မှုများ, Contact Form, မြေပုံ, ဘာသာစကား ၂ မျိုး..." data-i18n-ph="ph_features"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Logo Specific Questions -->
+                    <div id="logoSpecifics" class="conditional-section hidden-section">
+                        <h4 class="text-base font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-5 border-l-4 border-blue-500 pl-3" data-i18n="sub_logo_req">Logo ဒီဇိုင်း လိုအပ်ချက်များ</h4>
+                        
+                        <div class="space-y-5">
+                            <!-- Logo Name & Slogan -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div class="form-input-group border border-gray-200 dark:border-gray-600 rounded-xl p-4 transition-colors bg-white dark:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+                                    <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-2" data-i18n="lbl_logo_text">
+                                        Logo စာသား (Brand Name)
+                                    </label>
+                                    <input type="text" id="logoText" class="w-full px-3 py-2 text-base bg-transparent placeholder-gray-400 dark:text-white" placeholder="Company အမည်အတိုင်း သို့ အတိုကောက်" data-i18n-ph="ph_logo_text">
+                                </div>
+                                <div class="form-input-group border border-gray-200 dark:border-gray-600 rounded-xl p-4 transition-colors bg-white dark:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+                                    <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-2" data-i18n="lbl_slogan">
+                                        ဆောင်ပုဒ် (Slogan/Tagline)
+                                    </label>
+                                    <input type="text" id="logoSlogan" class="w-full px-3 py-2 text-base bg-transparent placeholder-gray-400 dark:text-white" placeholder="ရှိပါက ထည့်သွင်းပေးပါ" data-i18n-ph="ph_slogan">
+                                </div>
+                            </div>
+
+                            <!-- Logo Type Selection -->
+                            <div>
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-3" data-i18n="lbl_logo_type">လိုဂို အမျိုးအစား (Logo Type)</label>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="logoType" value="Icon Based" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                                            <i class="fas fa-icons text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i><br><span class="font-medium dark:text-gray-300">Icon + Text</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="logoType" value="Text Based" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                                            <i class="fas fa-font text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i><br><span class="font-medium dark:text-gray-300">Text Only</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="logoType" value="Mascot" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                                            <i class="fas fa-user-astronaut text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i><br><span class="font-medium dark:text-gray-300">Mascot</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Target Audience -->
+                            <div class="form-input-group border border-gray-200 dark:border-gray-600 rounded-xl p-4 transition-colors bg-white dark:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-2" data-i18n="lbl_target">
+                                    ပစ်မှတ်ထားသော Customer (Target Audience)
+                                </label>
+                                <textarea id="targetAudience" rows="2" class="w-full px-3 py-2 text-base bg-transparent resize-none placeholder-gray-400 dark:text-white" placeholder="ဥပမာ - လူငယ်များ၊ ရုံးဝန်ထမ်းများ၊ အိမ်ရှင်မများ..." data-i18n-ph="ph_target"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- UI/UX Specific Questions -->
+                    <div id="uiSpecifics" class="conditional-section hidden-section">
+                        <h4 class="text-base font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-5 border-l-4 border-blue-500 pl-3" data-i18n="sub_ui_req">UI/UX Design လိုအပ်ချက်များ</h4>
+                        
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-3" data-i18n="lbl_platform">အမျိုးအစား (Platform)</label>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="uiPlatform" value="Mobile App" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                                            <i class="fas fa-mobile-alt text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i><br><span class="font-medium dark:text-gray-300">Mobile App</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="uiPlatform" value="Web App" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                                            <i class="fas fa-laptop text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i><br><span class="font-medium dark:text-gray-300">Web App</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="uiPlatform" value="Dashboard" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                                            <i class="fas fa-chart-line text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i><br><span class="font-medium dark:text-gray-300">Dashboard</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-input-group border border-gray-200 dark:border-gray-600 rounded-xl p-4 transition-colors bg-white dark:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-2" data-i18n="lbl_screens">
+                                    ခန့်မှန်း Screen အရေအတွက်
+                                </label>
+                                <input type="number" id="uiScreens" class="w-full px-3 py-2 text-base bg-transparent placeholder-gray-400 dark:text-white" placeholder="e.g. 5, 10, 20..." data-i18n-ph="ph_screens">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Domain & Hosting Specific Questions -->
+                    <div id="domainSpecifics" class="conditional-section hidden-section">
+                        <h4 class="text-base font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-5 border-l-4 border-blue-500 pl-3" data-i18n="sub_domain_req">Domain & Hosting လိုအပ်ချက်များ</h4>
+                        
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-3" data-i18n="lbl_domain_status">Domain အခြေအနေ</label>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="domainStatus" value="Need New Domain" class="selection-input hidden" checked onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-4 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 h-full flex items-center justify-center flex-col transition-colors">
+                                            <i class="fas fa-cart-plus text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i>
+                                            <span class="font-medium leading-tight dark:text-gray-300" data-i18n="opt_new_domain">Domain အသစ်ဝယ်ယူလိုသည်</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="domainStatus" value="Have Existing Domain" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-4 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 h-full flex items-center justify-center flex-col transition-colors">
+                                            <i class="fas fa-check-circle text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i>
+                                            <span class="font-medium leading-tight dark:text-gray-300" data-i18n="opt_exist_domain">လက်ရှိ Domain ရှိပြီးဖြစ်သည်</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="domainStatus" value="Transfer Domain" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-4 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 h-full flex items-center justify-center flex-col transition-colors">
+                                            <i class="fas fa-exchange-alt text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i>
+                                            <span class="font-medium leading-tight dark:text-gray-300" data-i18n="opt_transfer_domain">Domain ပြောင်းရွှေ့လိုသည်</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-input-group border border-gray-200 dark:border-gray-600 rounded-xl p-4 transition-colors bg-white dark:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-2" data-i18n="lbl_domain_name">
+                                    လိုချင်သော Domain အမည် (ရှိပါက)
+                                </label>
+                                <input type="text" id="domainName" class="w-full px-3 py-2 text-base bg-transparent placeholder-gray-400 dark:text-white" placeholder="e.g. mycompany.com" data-i18n-ph="ph_domain_name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email Specific Questions -->
+                    <div id="emailSpecifics" class="conditional-section hidden-section">
+                        <h4 class="text-base font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-5 border-l-4 border-blue-500 pl-3" data-i18n="sub_email_req">Email Service လိုအပ်ချက်များ</h4>
+                        
+                        <div class="space-y-5">
+                            <div class="form-input-group border border-gray-200 dark:border-gray-600 rounded-xl p-4 transition-colors bg-white dark:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-2" data-i18n="lbl_email_users">
+                                    လိုအပ်သော အကောင့်အရေအတွက် (Users)
+                                </label>
+                                <input type="number" id="emailUsers" class="w-full px-3 py-2 text-base bg-transparent placeholder-gray-400 dark:text-white" placeholder="e.g. 5, 10, 50..." data-i18n-ph="ph_email_users">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Maintenance Specific Questions -->
+                    <div id="maintSpecifics" class="conditional-section hidden-section">
+                        <h4 class="text-base font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-5 border-l-4 border-blue-500 pl-3" data-i18n="sub_maint_req">Maintenance လိုအပ်ချက်များ</h4>
+                        
+                        <div class="space-y-5">
+                            <div class="form-input-group border border-gray-200 dark:border-gray-600 rounded-xl p-4 transition-colors bg-white dark:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-2" data-i18n="lbl_maint_url">
+                                    လက်ရှိ Website Link
+                                </label>
+                                <input type="text" id="maintUrl" class="w-full px-3 py-2 text-base bg-transparent placeholder-gray-400 dark:text-white" placeholder="https://www.example.com" data-i18n-ph="ph_maint_url">
+                            </div>
+                            <div class="form-input-group border border-gray-200 dark:border-gray-600 rounded-xl p-4 transition-colors bg-white dark:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-2" data-i18n="lbl_maint_issue">
+                                    ပြုပြင်လိုသော အကြောင်းအရာ
+                                </label>
+                                <textarea id="maintIssue" rows="2" class="w-full px-3 py-2 text-base bg-transparent resize-none placeholder-gray-400 dark:text-white" placeholder="Error များကို ဖော်ပြပေးပါ..." data-i18n-ph="ph_maint_issue"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Budget Selection -->
+                    <div class="pt-6 border-t border-gray-100 dark:border-gray-700">
+                        <label class="block text-base font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
+                            <i class="fas fa-wallet text-blue-500 mr-2.5 bg-blue-50 dark:bg-gray-600 p-2 rounded-lg"></i> 
+                            <span data-i18n="lbl_budget">ခန့်မှန်း ဘတ်ဂျက် (Estimated Budget)</span>
+                        </label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="cursor-pointer relative group">
+                                <input type="radio" name="budget" value="Negotiable" class="selection-input hidden" checked onclick="saveProgress()">
+                                <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-4 text-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 h-full">
+                                    <span class="block text-base font-semibold text-gray-800 dark:text-gray-300" data-i18n="opt_budget_neg">ညှိနှိုင်းလိုသည်</span>
+                                    <span class="text-sm text-gray-500 dark:text-gray-400 mt-1">Negotiable</span>
+                                    <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative group">
+                                <input type="radio" name="budget" value="Basic Plan" class="selection-input hidden" onclick="saveProgress()">
+                                <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-4 text-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 h-full">
+                                    <span class="block text-base font-semibold text-gray-800 dark:text-gray-300">Basic</span>
+                                    <span class="text-sm text-gray-500 dark:text-gray-400 mt-1" data-i18n="opt_budget_min">အနည်းဆုံး</span>
+                                    <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative group">
+                                <input type="radio" name="budget" value="Standard Plan" class="selection-input hidden" onclick="saveProgress()">
+                                <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-4 text-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 h-full">
+                                    <span class="block text-base font-semibold text-gray-800 dark:text-gray-300">Standard</span>
+                                    <span class="text-sm text-gray-500 dark:text-gray-400 mt-1" data-i18n="opt_budget_norm">ပုံမှန်</span>
+                                    <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative group">
+                                <input type="radio" name="budget" value="Premium Plan" class="selection-input hidden" onclick="saveProgress()">
+                                <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-4 text-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 h-full">
+                                    <span class="block text-base font-semibold text-gray-800 dark:text-gray-300">Premium</span>
+                                    <span class="text-sm text-gray-500 dark:text-gray-400 mt-1" data-i18n="opt_budget_max">အမြင့်ဆုံး</span>
+                                    <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Selection -->
+                    <div>
+                        <label class="block text-base font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
+                            <i class="fas fa-clock text-blue-500 mr-2.5 bg-blue-50 dark:bg-gray-600 p-2 rounded-lg"></i> 
+                            <span data-i18n="lbl_timeline">ပြီးစီးစေချင်သော အချိန် (Timeline)</span>
+                        </label>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <label class="cursor-pointer relative group">
+                                <input type="radio" name="timeline" value="Normal" class="selection-input hidden" checked onclick="saveProgress()">
+                                <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-4 flex md:flex-col items-center justify-between md:justify-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500">
+                                    <div class="flex items-center md:flex-col md:text-center">
+                                        <i class="far fa-calendar-alt text-2xl text-gray-400 dark:text-gray-500 mr-4 md:mr-0 md:mb-3 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors"></i>
+                                        <div>
+                                            <span class="block text-base font-semibold text-gray-800 dark:text-gray-300">Normal</span>
+                                            <span class="text-sm text-gray-500 dark:text-gray-400" data-i18n="opt_time_norm">ပုံမှန်</span>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 hidden text-xl"></i>
+                                </div>
+                            </label>
+                            
+                            <label class="cursor-pointer relative group">
+                                <input type="radio" name="timeline" value="Urgent" class="selection-input hidden" onclick="saveProgress()">
+                                <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-4 flex md:flex-col items-center justify-between md:justify-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500">
+                                    <div class="flex items-center md:flex-col md:text-center">
+                                        <i class="fas fa-running text-2xl text-gray-400 dark:text-gray-500 mr-4 md:mr-0 md:mb-3 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors"></i>
+                                        <div>
+                                            <span class="block text-base font-semibold text-gray-800 dark:text-gray-300">Urgent</span>
+                                            <span class="text-sm text-gray-500 dark:text-gray-400" data-i18n="opt_time_urgent">၁ ပတ်အတွင်း</span>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 hidden text-xl"></i>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer relative group">
+                                <input type="radio" name="timeline" value="Relaxed" class="selection-input hidden" onclick="saveProgress()">
+                                <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-4 flex md:flex-col items-center justify-between md:justify-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500">
+                                    <div class="flex items-center md:flex-col md:text-center">
+                                        <i class="fas fa-business-time text-2xl text-gray-400 dark:text-gray-500 mr-4 md:mr-0 md:mb-3 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors"></i>
+                                        <div>
+                                            <span class="block text-base font-semibold text-gray-800 dark:text-gray-300">Relaxed</span>
+                                            <span class="text-sm text-gray-500 dark:text-gray-400" data-i18n="opt_time_relax">၁ လခန့်</span>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 hidden text-xl"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="flex justify-center pt-6">
+                <button type="submit" class="bg-blue-600 text-white font-bold text-lg py-4 px-10 rounded-full shadow-lg hover:bg-blue-700 transform hover:scale-105 transition flex items-center shadow-blue-500/30">
+                    <i class="fas fa-paper-plane mr-3"></i> <span data-i18n="btn_submit">အချက်အလက်များ ပေးပို့မည်</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Result Modal -->
+        <div id="resultModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity">
+            <div class="bg-white dark:bg-dark-card rounded-2xl max-w-lg w-full p-8 shadow-2xl transform transition-all scale-100">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                        <i class="fas fa-check text-green-600 dark:text-green-300 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2" data-i18n="modal_title">ကျေးဇူးတင်ပါတယ်!</h3>
+                    <p class="text-base text-gray-600 dark:text-gray-400" data-i18n="modal_desc">အောက်ပါ Telegram (သို့) Viber ခလုတ်ကို နှိပ်ပြီး အချက်အလက်များကို ပေးပို့နိုင်ပါသည်။ (စာများကို Auto Copy ကူးပေးပါမည်)</p>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 mb-6 h-48 overflow-y-auto custom-scrollbar">
+                    <pre id="finalOutput" class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap font-sans leading-relaxed"></pre>
+                </div>
+
+                <div class="flex flex-col space-y-3">
+                    <!-- Telegram Button -->
+                    <button onclick="sendViaTelegram()" class="w-full bg-[#0088cc] text-white font-bold text-lg py-3.5 rounded-xl hover:bg-[#0077b5] transition flex items-center justify-center shadow-md">
+                        <i class="fab fa-telegram text-2xl mr-3"></i> <span data-i18n="btn_telegram">Telegram ဖြင့် ပေးပို့မည်</span>
+                    </button>
+                    
+                    <!-- Viber Button -->
+                    <button onclick="sendViaViber()" class="w-full bg-[#7360f2] text-white font-bold text-lg py-3.5 rounded-xl hover:bg-[#604ce0] transition flex items-center justify-center shadow-md">
+                        <i class="fab fa-viber text-2xl mr-3"></i> <span data-i18n="btn_viber">Viber ဖြင့် ပေးပို့မည်</span>
+                    </button>
+
+                    <!-- PDF Button (New) -->
+                    <button onclick="downloadPDF()" class="w-full bg-red-600 text-white font-bold text-lg py-3.5 rounded-xl hover:bg-red-700 transition flex items-center justify-center shadow-md">
+                        <i class="fas fa-file-pdf text-2xl mr-3"></i> <span data-i18n="btn_pdf">PDF ဒေါင်းလုတ်ရယူမည်</span>
+                    </button>
+
+                    <button onclick="closeModal()" class="w-full text-gray-500 dark:text-gray-400 font-semibold py-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition text-base mt-2">
+                        <span data-i18n="btn_close">ပိတ်မည်</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-8 mt-16 text-center text-sm">
+        <div class="container mx-auto px-4">
+            <p class="mb-2 text-lg font-semibold text-gray-300">MATG TEAMS Creative Studio</p>
+            <p>&copy; 2024 All rights reserved. Developer by NAY MIN THU</p>
+        </div>
+    </footer>
+
+    <script>
+        // Constants
+        const TELEGRAM_USERNAME = "matgteams";
+        const VIBER_PHONE = "959425287090";
+
+        // --- Localization Data ---
+        const translations = {
+            'my': {
+                'header_subtitle': 'Web Design & UI/UX Solutions',
+                'contact_btn': 'ဆက်သွယ်ရန်',
+                'form_title': 'လုပ်ငန်း အပ်နှံရန် မေးခွန်းလွှာ',
+                'form_desc': 'သင့်လုပ်ငန်းအတွက် အကောင်းဆုံး ဝန်ဆောင်မှုပေးနိုင်ရန် အောက်ပါ အချက်အလက်လေးများကို ဖြေဆိုပေးပါခင်ဗျာ။',
+                'sec_contact': 'မိတ်ဆက်',
+                'lbl_name': 'သင့်အမည်',
+                'ph_name': 'မောင်မောင်',
+                'lbl_phone': 'ဖုန်းနံပါတ်',
+                'lbl_business': 'လုပ်ငန်း/ကုမ္ပဏီ အမည်',
+                'ph_business': 'ဥပမာ - Royal Myanmar Tea',
+                'sec_services': 'လိုအပ်သော ဝန်ဆောင်မှုများ',
+                'svc_web': 'Website ရေးဆွဲခြင်း',
+                'svc_logo': 'Logo ဒီဇိုင်း',
+                'svc_maint': 'ပြုပြင်ထိန်းသိမ်းခြင်း',
+                'sec_design': 'ဒီဇိုင်းနှင့် အရောင် (Design & Style)',
+                'lbl_mood': 'သင့် Brand ၏ ပုံရိပ် (Mood)',
+                'lbl_colors': 'Brand အရောင်များ ရွေးရန်',
+                'lbl_preview': 'နမူနာ (Preview)',
+                'lbl_style_balance': 'Design Style Balance',
+                'st_minimal': 'Minimal (ရှင်းလင်း)',
+                'st_complex': 'Complex (အချက်အလက်စုံ)',
+                'st_modern': 'Modern (ခေတ်ဆန်)',
+                'st_classic': 'Classic (ဂန္တဝင်)',
+                'sec_details': 'အသေးစိတ် အချက်အလက်များ (Details)',
+                'sub_web_req': 'Website လိုအပ်ချက်များ',
+                'lbl_ref': 'နမူနာ Website များ (Reference Sites)',
+                'ph_ref': 'ကြိုက်နှစ်သက်တဲ့ Website link (သို့) Facebook page link များကို ထည့်ပေးပါ...',
+                'lbl_features': 'Website တွင် ပါဝင်စေချင်သော အခန်းကဏ္ဍများ',
+                'ph_features': 'ဥပမာ - Home, About Us, ဝန်ဆောင်မှုများ, Contact Form, မြေပုံ, ဘာသာစကား ၂ မျိုး...',
+                'sub_logo_req': 'Logo ဒီဇိုင်း လိုအပ်ချက်များ',
+                'lbl_logo_text': 'Logo စာသား (Brand Name)',
+                'ph_logo_text': 'Company အမည်အတိုင်း သို့ အတိုကောက်',
+                'lbl_slogan': 'ဆောင်ပုဒ် (Slogan/Tagline)',
+                'ph_slogan': 'ရှိပါက ထည့်သွင်းပေးပါ',
+                'lbl_logo_type': 'လိုဂို အမျိုးအစား (Logo Type)',
+                'lbl_target': 'ပစ်မှတ်ထားသော Customer (Target Audience)',
+                'ph_target': 'ဥပမာ - လူငယ်များ၊ ရုံးဝန်ထမ်းများ၊ အိမ်ရှင်မများ...',
+                'lbl_budget': 'ခန့်မှန်း ဘတ်ဂျက် (Estimated Budget)',
+                'opt_budget_neg': 'ညှိနှိုင်းလိုသည်',
+                'opt_budget_min': 'အနည်းဆုံး',
+                'opt_budget_norm': 'ပုံမှန်',
+                'opt_budget_max': 'အမြင့်ဆုံး',
+                'lbl_timeline': 'ပြီးစီးစေချင်သော အချိန် (Timeline)',
+                'opt_time_norm': 'ပုံမှန်',
+                'opt_time_urgent': '၁ ပတ်အတွင်း',
+                'opt_time_relax': '၁ လခန့်',
+                'btn_submit': 'အချက်အလက်များ ပေးပို့မည်',
+                'modal_title': 'ကျေးဇူးတင်ပါတယ်!',
+                'modal_desc': 'အောက်ပါ Telegram (သို့) Viber ခလုတ်ကို နှိပ်ပြီး အချက်အလက်များကို ပေးပို့နိုင်ပါသည်။ (စာများကို Auto Copy ကူးပေးပါမည်)',
+                'btn_telegram': 'Telegram ဖြင့် ပေးပို့မည်',
+                'btn_viber': 'Viber ဖြင့် ပေးပို့မည်',
+                'btn_pdf': 'PDF ဒေါင်းလုတ်ရယူမည်',
+                'btn_close': 'ပိတ်မည်',
+                'sub_ui_req': 'UI/UX Design လိုအပ်ချက်များ',
+                'lbl_platform': 'အမျိုးအစား (Platform)',
+                'lbl_screens': 'ခန့်မှန်း Screen အရေအတွက်',
+                'ph_screens': 'e.g. 5, 10, 20...',
+                'sub_domain_req': 'Domain & Hosting လိုအပ်ချက်များ',
+                'lbl_domain_status': 'Domain အခြေအနေ',
+                'lbl_domain_name': 'လိုချင်သော Domain အမည် (ရှိပါက)',
+                'ph_domain_name': 'e.g. mycompany.com',
+                'sub_email_req': 'Email Service လိုအပ်ချက်များ',
+                'lbl_email_users': 'လိုအပ်သော အကောင့်အရေအတွက် (Users)',
+                'ph_email_users': 'e.g. 5, 10, 50...',
+                'sub_maint_req': 'Maintenance လိုအပ်ချက်များ',
+                'lbl_maint_url': 'လက်ရှိ Website Link',
+                'ph_maint_url': 'https://www.example.com',
+                'lbl_maint_issue': 'ပြုပြင်လိုသော အကြောင်းအရာ',
+                'ph_maint_issue': 'Error များကို ဖော်ပြပေးပါ...',
+                'opt_new_domain': 'Domain အသစ်ဝယ်ယူလိုသည်',
+                'opt_exist_domain': 'လက်ရှိ Domain ရှိပြီးဖြစ်သည်',
+                'opt_transfer_domain': 'Domain ပြောင်းရွှေ့လိုသည်'
+            },
+            'en': {
+                'header_subtitle': 'Web Design & UI/UX Solutions',
+                'contact_btn': 'Contact Us',
+                'form_title': 'Project Inquiry Form',
+                'form_desc': 'Please fill out the form below so we can provide the best service for your business.',
+                'sec_contact': 'Contact Info',
+                'lbl_name': 'Your Name',
+                'ph_name': 'e.g. John Doe',
+                'lbl_phone': 'Phone Number',
+                'lbl_business': 'Business Name',
+                'ph_business': 'e.g. Royal Myanmar Tea',
+                'sec_services': 'Services Needed',
+                'svc_web': 'Web Development',
+                'svc_logo': 'Logo Design',
+                'svc_maint': 'Maintenance',
+                'sec_design': 'Design & Style Preferences',
+                'lbl_mood': 'Brand Mood',
+                'lbl_colors': 'Pick Brand Colors',
+                'lbl_preview': 'Preview',
+                'lbl_style_balance': 'Design Style Balance',
+                'st_minimal': 'Minimal',
+                'st_complex': 'Complex',
+                'st_modern': 'Modern',
+                'st_classic': 'Classic',
+                'sec_details': 'Project Details',
+                'sub_web_req': 'Website Requirements',
+                'lbl_ref': 'Reference Sites',
+                'ph_ref': 'Paste links to websites or Facebook pages you like...',
+                'lbl_features': 'Desired Features',
+                'ph_features': 'e.g., Home, About Us, Services, Contact Form, Map, Multi-language...',
+                'sub_logo_req': 'Logo Design Requirements',
+                'lbl_logo_text': 'Logo Text (Brand Name)',
+                'ph_logo_text': 'Full company name or abbreviation',
+                'lbl_slogan': 'Slogan/Tagline',
+                'ph_slogan': 'If any',
+                'lbl_logo_type': 'Logo Type',
+                'lbl_target': 'Target Audience',
+                'ph_target': 'e.g. Youth, Office Workers, Housewives...',
+                'lbl_budget': 'Estimated Budget',
+                'opt_budget_neg': 'Negotiable',
+                'opt_budget_min': 'Minimum',
+                'opt_budget_norm': 'Standard',
+                'opt_budget_max': 'Premium',
+                'lbl_timeline': 'Timeline',
+                'opt_time_norm': 'Normal',
+                'opt_time_urgent': 'Urgent (1 Week)',
+                'opt_time_relax': 'Relaxed (1 Month)',
+                'btn_submit': 'Submit Requirements',
+                'modal_title': 'Thank You!',
+                'modal_desc': 'Click below to send via Telegram or Viber. (Text will be auto-copied)',
+                'btn_telegram': 'Send via Telegram',
+                'btn_viber': 'Send via Viber',
+                'btn_pdf': 'Download as PDF',
+                'btn_close': 'Close',
+                'sub_ui_req': 'UI/UX Design Requirements',
+                'lbl_platform': 'Platform',
+                'lbl_screens': 'Approx. No. of Screens',
+                'ph_screens': 'e.g. 5, 10, 20...',
+                'sub_domain_req': 'Domain & Hosting Requirements',
+                'lbl_domain_status': 'Domain Status',
+                'lbl_domain_name': 'Preferred Domain Name',
+                'ph_domain_name': 'e.g. mycompany.com',
+                'sub_email_req': 'Email Service Requirements',
+                'lbl_email_users': 'Number of Email Accounts',
+                'ph_email_users': 'e.g. 5, 10, 50...',
+                'sub_maint_req': 'Maintenance Requirements',
+                'lbl_maint_url': 'Current Website Link',
+                'ph_maint_url': 'https://www.example.com',
+                'lbl_maint_issue': 'Issue Description',
+                'ph_maint_issue': 'Describe errors or updates needed...',
+                'opt_new_domain': 'Need New Domain',
+                'opt_exist_domain': 'Have Existing Domain',
+                'opt_transfer_domain': 'Transfer Domain'
+            }
+        };
+
+        let currentLang = 'my';
+
+        // 1. Dark Mode Logic
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            const icon = document.getElementById('themeIcon');
+            icon.className = isDark ? 'fas fa-sun text-yellow-300' : 'fas fa-moon text-white';
+        }
+
+        function loadTheme() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeIcon').className = 'fas fa-sun text-yellow-300';
+            }
+        }
+
+        // 2. Auto Save Logic
+        function saveProgress() {
+            const formData = {
+                clientName: document.getElementById('clientName').value,
+                clientPhone: document.getElementById('clientPhone').value,
+                businessName: document.getElementById('businessName').value,
+                // Checkboxes
+                services: Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value),
+                // Colors
+                color1: document.getElementById('primaryColor').value,
+                color2: document.getElementById('secondaryColor').value,
+                // Sliders
+                style1: document.getElementById('styleRange1').value,
+                style2: document.getElementById('styleRange2').value,
+                // Text Areas & Inputs
+                refSites: document.getElementById('refSites').value,
+                features: document.getElementById('features').value,
+                logoText: document.getElementById('logoText').value,
+                logoSlogan: document.getElementById('logoSlogan').value,
+                targetAudience: document.getElementById('targetAudience').value,
+                uiScreens: document.getElementById('uiScreens').value,
+                domainName: document.getElementById('domainName').value,
+                emailUsers: document.getElementById('emailUsers').value,
+                maintUrl: document.getElementById('maintUrl').value,
+                maintIssue: document.getElementById('maintIssue').value,
+                // Radios
+                logoType: document.querySelector('input[name="logoType"]:checked')?.value,
+                uiPlatform: document.querySelector('input[name="uiPlatform"]:checked')?.value,
+                domainStatus: document.querySelector('input[name="domainStatus"]:checked')?.value,
+                budget: document.querySelector('input[name="budget"]:checked')?.value,
+                timeline: document.querySelector('input[name="timeline"]:checked')?.value,
+                // Moods (need special handling or simpler approximation, let's skip for simple localStorage or store array)
+                // Storing selected moods involves reading DOM classes which is tricky on restore without complex logic.
+                // For simplicity, we'll auto-save standard inputs.
+            };
+            localStorage.setItem('projectFormData', JSON.stringify(formData));
+            updateProgressBar();
+        }
+
+        function loadProgress() {
+            const savedData = localStorage.getItem('projectFormData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                
+                // Restore Text Inputs
+                if(data.clientName) document.getElementById('clientName').value = data.clientName;
+                if(data.clientPhone) document.getElementById('clientPhone').value = data.clientPhone;
+                if(data.businessName) document.getElementById('businessName').value = data.businessName;
+                if(data.refSites) document.getElementById('refSites').value = data.refSites;
+                if(data.features) document.getElementById('features').value = data.features;
+                if(data.logoText) document.getElementById('logoText').value = data.logoText;
+                if(data.logoSlogan) document.getElementById('logoSlogan').value = data.logoSlogan;
+                if(data.targetAudience) document.getElementById('targetAudience').value = data.targetAudience;
+                if(data.uiScreens) document.getElementById('uiScreens').value = data.uiScreens;
+                if(data.domainName) document.getElementById('domainName').value = data.domainName;
+                if(data.emailUsers) document.getElementById('emailUsers').value = data.emailUsers;
+                if(data.maintUrl) document.getElementById('maintUrl').value = data.maintUrl;
+                if(data.maintIssue) document.getElementById('maintIssue').value = data.maintIssue;
+
+                // Restore Colors
+                if(data.color1) document.getElementById('primaryColor').value = data.color1;
+                if(data.color2) document.getElementById('secondaryColor').value = data.color2;
+                updatePreview();
+
+                // Restore Sliders
+                if(data.style1) document.getElementById('styleRange1').value = data.style1;
+                if(data.style2) document.getElementById('styleRange2').value = data.style2;
+
+                // Restore Radios
+                if(data.logoType) checkRadio('logoType', data.logoType);
+                if(data.uiPlatform) checkRadio('uiPlatform', data.uiPlatform);
+                if(data.domainStatus) checkRadio('domainStatus', data.domainStatus);
+                if(data.budget) checkRadio('budget', data.budget);
+                if(data.timeline) checkRadio('timeline', data.timeline);
+
+                // Restore Checkboxes
+                if(data.services) {
+                    data.services.forEach(val => {
+                        const cb = document.querySelector(`input[name="services"][value="${val}"]`);
+                        if(cb) cb.checked = true;
+                    });
+                }
+                
+                updateFormVisibility();
+                updateProgressBar();
+            }
+        }
+
+        function checkRadio(name, value) {
+            const radio = document.querySelector(`input[name="${name}"][value="${value}"]`);
+            if(radio) radio.checked = true;
+        }
+
+        // 3. Progress Bar Logic
+        function updateProgressBar() {
+            const inputs = document.querySelectorAll('input[type="text"], input[type="tel"], textarea, input[type="number"]');
+            let filled = 0;
+            let total = 0;
+
+            // Only count visible inputs based on logic would be better, but simple count works for demo
+            // Let's count specific core fields + checked services
+            
+            const coreFields = ['clientName', 'clientPhone'];
+            coreFields.forEach(id => {
+                if(document.getElementById(id).value.trim() !== '') filled++;
+                total++;
+            });
+
+            // Services checked?
+            const services = document.querySelectorAll('input[name="services"]:checked');
+            if(services.length > 0) filled++;
+            total++;
+
+            // Budget & Timeline
+            total += 2;
+            if(document.querySelector('input[name="budget"]:checked')) filled++;
+            if(document.querySelector('input[name="timeline"]:checked')) filled++;
+
+            const pct = Math.round((filled / total) * 100);
+            document.getElementById('progressBar').style.width = pct + '%';
+        }
+
+        // Attach auto-save to all inputs
+        function attachAutoSave() {
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', saveProgress);
+                input.addEventListener('change', saveProgress);
+            });
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            // Update UI Text
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+
+            // Update Placeholders
+            const inputs = document.querySelectorAll('[data-i18n-ph]');
+            inputs.forEach(el => {
+                const key = el.getAttribute('data-i18n-ph');
+                if (translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+            // Update Button Styles
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Toggle Mood Buttons
+        function toggleMood(btn) {
+            btn.classList.toggle('active');
+            // saveProgress(); // Optional if we want to persist mood
+        }
+
+        // Live Color Preview
+        function updatePreview() {
+            const p = document.getElementById('primaryColor').value;
+            const s = document.getElementById('secondaryColor').value;
+            const box = document.getElementById('colorPreviewBox');
+            const text = document.getElementById('colorPreviewText');
+            
+            box.style.backgroundColor = p;
+            text.style.color = s;
+            saveProgress();
+        }
+
+        // Conditional Logic for all services
+        function updateFormVisibility() {
+            const isWeb = document.getElementById('chk-web').checked;
+            const isLogo = document.getElementById('chk-logo').checked;
+            const isUi = document.getElementById('chk-ui').checked;
+            const isDomain = document.getElementById('chk-domain').checked;
+            const isEmail = document.getElementById('chk-email').checked;
+            const isMaint = document.getElementById('chk-maint').checked;
+
+            const sections = {
+                'webSpecifics': isWeb,
+                'logoSpecifics': isLogo,
+                'uiSpecifics': isUi,
+                'domainSpecifics': isDomain,
+                'emailSpecifics': isEmail,
+                'maintSpecifics': isMaint
+            };
+
+            for (const [id, isVisible] of Object.entries(sections)) {
+                const el = document.getElementById(id);
+                if (isVisible) {
+                    el.classList.remove('hidden-section');
+                } else {
+                    el.classList.add('hidden-section');
+                }
+            }
+        }
+
+        function generateBrief() {
+            // Get values
+            const name = document.getElementById('clientName').value;
+            const phone = document.getElementById('clientPhone').value;
+            const business = document.getElementById('businessName').value || "-";
+            
+            // Get Checkboxes
+            const services = Array.from(document.querySelectorAll('input[name="services"]:checked'))
+                .map(cb => cb.value).join(', ');
+
+            // Check what is selected
+            const isWeb = document.getElementById('chk-web').checked;
+            const isLogo = document.getElementById('chk-logo').checked;
+            const isUi = document.getElementById('chk-ui').checked;
+            const isDomain = document.getElementById('chk-domain').checked;
+            const isEmail = document.getElementById('chk-email').checked;
+            const isMaint = document.getElementById('chk-maint').checked;
+
+            // Get Moods
+            const moods = Array.from(document.querySelectorAll('.mood-btn.active'))
+                .map(btn => btn.innerText).join(', ') || "Not Selected";
+
+            // Colors
+            const color1 = document.getElementById('primaryColor').value;
+            const color2 = document.getElementById('secondaryColor').value;
+
+            // Sliders
+            const s1 = document.getElementById('styleRange1').value;
+            let style1 = "Balanced";
+            if (s1 == 1) style1 = "Very Minimal"; if (s1 == 2) style1 = "Minimal"; if (s1 == 4) style1 = "Complex"; if (s1 == 5) style1 = "Very Complex";
+            
+            const s2 = document.getElementById('styleRange2').value;
+            let style2 = "Balanced";
+            if (s2 == 1) style2 = "Very Modern"; if (s2 == 2) style2 = "Modern"; if (s2 == 4) style2 = "Classic"; if (s2 == 5) style2 = "Very Classic";
+
+            // Common Radio Values
+            const budget = document.querySelector('input[name="budget"]:checked')?.value || "Negotiable";
+            const timeline = document.querySelector('input[name="timeline"]:checked')?.value || "Normal";
+
+            // Translate output headers
+            const inquiryTitle = currentLang === 'en' ? "Project Inquiry" : "လုပ်ငန်း အပ်နှံမှု အကျဉ်းချုပ်";
+            
+            // Build Requirement Strings
+            let reqs = "";
+
+            if (isWeb) {
+                const refs = document.getElementById('refSites').value || "-";
+                const features = document.getElementById('features').value || "-";
+                reqs += `
+🌐 **Web Specifics:**
+- References: ${refs}
+- Features: ${features}
+`;
+            }
+
+            if (isLogo) {
+                const lText = document.getElementById('logoText').value || "-";
+                const lSlogan = document.getElementById('logoSlogan').value || "-";
+                const lType = document.querySelector('input[name="logoType"]:checked')?.value || "Any";
+                const lTarget = document.getElementById('targetAudience').value || "-";
+                reqs += `
+✒️ **Logo Specifics:**
+- Name: ${lText}
+- Slogan: ${lSlogan}
+- Type: ${lType}
+- Target: ${lTarget}
+`;
+            }
+
+            if (isUi) {
+                const uiPlat = document.querySelector('input[name="uiPlatform"]:checked')?.value || "-";
+                const uiScreens = document.getElementById('uiScreens').value || "-";
+                reqs += `
+🎨 **UI/UX Specifics:**
+- Platform: ${uiPlat}
+- Screens: ${uiScreens}
+`;
+            }
+
+            if (isDomain) {
+                const dStatus = document.querySelector('input[name="domainStatus"]:checked')?.value || "Need New Domain";
+                const dName = document.getElementById('domainName').value || "-";
+                reqs += `
+☁️ **Domain & Hosting:**
+- Status: ${dStatus}
+- Name: ${dName}
+`;
+            }
+
+            if (isEmail) {
+                const eUsers = document.getElementById('emailUsers').value || "-";
+                reqs += `
+📧 **Email Service:**
+- Users: ${eUsers}
+`;
+            }
+
+            if (isMaint) {
+                const mUrl = document.getElementById('maintUrl').value || "-";
+                const mIssue = document.getElementById('maintIssue').value || "-";
+                reqs += `
+🔧 **Maintenance:**
+- URL: ${mUrl}
+- Issue: ${mIssue}
+`;
+            }
+
+            // Generate Final Text
+            const text = `📢 **${inquiryTitle}**
+
+👤 **Client Info:**
+- Name: ${name}
+- Phone: ${phone}
+- Business: ${business}
+
+🛠 **Services:**
+${services ? services : 'Discuss'}
+
+🎨 **Design Preferences:**
+- Mood: ${moods}
+- Style: ${style1}, ${style2}
+- Colors: Primary(${color1}), Secondary(${color2})
+${reqs}
+💰 **Budget & Timeline:**
+- Budget: ${budget}
+- Timeline: ${timeline}
+
+---------------------------
+Form generated by Creative Studio`;
+
+            document.getElementById('finalOutput').innerText = text;
+            document.getElementById('resultModal').classList.remove('hidden');
+        }
+
+        // 4. Save as PDF Logic
+        function downloadPDF() {
+            const element = document.getElementById('finalOutput');
+            const opt = {
+                margin:       1,
+                filename:     'project-requirements.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            // Visual feedback for user
+            const originalText = element.innerText;
+            // Temporarily style for PDF if needed, but text format is fine.
+            
+            html2pdf().set(opt).from(element).save();
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').classList.add('hidden');
+        }
+
+        function copyAndOpen(url) {
+            const text = document.getElementById('finalOutput').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const msg = currentLang === 'en' 
+                    ? "Text copied! Paste it in the chat." 
+                    : "စာသားများကို Copy ကူးပြီးပါပြီ။ Chat Box တွင် Paste (စာကူးထည့်) လုပ်ပြီး ပေးပို့လိုက်ပါ။";
+                alert(msg);
+                window.open(url, '_blank');
+            }).catch(err => {
+                window.open(url, '_blank');
+            });
+        }
+
+        function sendViaTelegram() {
+            const url = `https://t.me/${TELEGRAM_USERNAME}`;
+            copyAndOpen(url);
+        }
+
+        function sendViaViber() {
+            const url = `viber://chat?number=%2B${VIBER_PHONE}`;
+            copyAndOpen(url);
+        }
+
+        // Initialize visibility on load
+        window.onload = function() {
+            loadTheme(); // Load Dark Mode
+            loadProgress(); // Load Saved Data
+            attachAutoSave(); // Start Listeners
+            updateFormVisibility();
+        };
+    </script>
+</body>
+</html>
