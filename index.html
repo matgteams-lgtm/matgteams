@@ -348,16 +348,28 @@
                     <span data-i18n="sec_design">ဒီဇိုင်းနှင့် အရောင် (Design & Style)</span>
                 </h3>
                 
-                <!-- Brand Mood -->
+                <!-- Brand Mood (Updated to Grid Layout with Icons) -->
                 <div class="mb-8">
                     <label class="block text-base font-bold text-gray-800 dark:text-gray-200 mb-4" data-i18n="lbl_mood">သင့် Brand ၏ ပုံရိပ် (Mood)</label>
-                    <div class="flex flex-wrap gap-3" id="moodTags">
-                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Professional">Professional</button>
-                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Playful">Playful</button>
-                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Luxury">Luxury</button>
-                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Minimal">Minimal</button>
-                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Modern">Modern</button>
-                        <button type="button" class="mood-btn px-6 py-2.5 rounded-full border border-gray-300 text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" onclick="toggleMood(this)" data-value="Traditional">Traditional</button>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="moodTags">
+                        <button type="button" class="mood-btn w-full px-4 py-3 rounded-xl border border-gray-300 text-sm md:text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 flex items-center justify-center font-medium transition-all" onclick="toggleMood(this)" data-value="Professional">
+                            <i class="fas fa-briefcase mr-2"></i> Professional
+                        </button>
+                        <button type="button" class="mood-btn w-full px-4 py-3 rounded-xl border border-gray-300 text-sm md:text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 flex items-center justify-center font-medium transition-all" onclick="toggleMood(this)" data-value="Playful">
+                            <i class="fas fa-smile-beam mr-2"></i> Playful
+                        </button>
+                        <button type="button" class="mood-btn w-full px-4 py-3 rounded-xl border border-gray-300 text-sm md:text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 flex items-center justify-center font-medium transition-all" onclick="toggleMood(this)" data-value="Luxury">
+                            <i class="fas fa-gem mr-2"></i> Luxury
+                        </button>
+                        <button type="button" class="mood-btn w-full px-4 py-3 rounded-xl border border-gray-300 text-sm md:text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 flex items-center justify-center font-medium transition-all" onclick="toggleMood(this)" data-value="Minimal">
+                            <i class="fas fa-leaf mr-2"></i> Minimal
+                        </button>
+                        <button type="button" class="mood-btn w-full px-4 py-3 rounded-xl border border-gray-300 text-sm md:text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 flex items-center justify-center font-medium transition-all" onclick="toggleMood(this)" data-value="Modern">
+                            <i class="fas fa-rocket mr-2"></i> Modern
+                        </button>
+                        <button type="button" class="mood-btn w-full px-4 py-3 rounded-xl border border-gray-300 text-sm md:text-base text-gray-600 hover:border-blue-500 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 flex items-center justify-center font-medium transition-all" onclick="toggleMood(this)" data-value="Traditional">
+                            <i class="fas fa-landmark mr-2"></i> Traditional
+                        </button>
                     </div>
                 </div>
 
@@ -480,26 +492,91 @@
                                 </div>
                             </div>
 
-                            <!-- Logo Type Selection -->
+                            <!-- Logo Type Selection (Redesigned with Modal trigger) -->
                             <div>
-                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-3" data-i18n="lbl_logo_type">လိုဂို အမျိုးအစား (Logo Type)</label>
-                                <div class="grid grid-cols-3 gap-3">
+                                <label class="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-4" data-i18n="lbl_logo_type">လိုဂို အမျိုးအစား (Logo Type)</label>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    <!-- 1. Wordmark -->
                                     <label class="cursor-pointer group">
-                                        <input type="radio" name="logoType" value="Icon Based" class="selection-input hidden" onclick="saveProgress()">
-                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
-                                            <i class="fas fa-icons text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i><br><span class="font-medium dark:text-gray-300">Icon + Text</span>
+                                        <input type="radio" name="logoType" value="Wordmark" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-800 relative shadow-sm hover:shadow-md">
+                                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                                            <i class="fas fa-font text-4xl mb-3 text-gray-400 dark:text-gray-500 group-hover:text-blue-500 transition-colors"></i>
+                                            <span class="font-bold text-gray-800 dark:text-gray-200 block text-base mb-1" data-i18n="lt_wordmark">Wordmark</span>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400" data-i18n="lt_wordmark_desc">စာသားအခြေပြု</span>
+                                            <button type="button" onclick="openLogoModal(event, 'Wordmark')" class="mt-4 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600 px-4 py-2 rounded-full z-20 relative transition-colors shadow-sm w-full">
+                                                <i class="fas fa-images mr-1"></i> နမူနာကြည့်ရန်
+                                            </button>
                                         </div>
                                     </label>
+
+                                    <!-- 2. Monogram -->
                                     <label class="cursor-pointer group">
-                                        <input type="radio" name="logoType" value="Text Based" class="selection-input hidden" onclick="saveProgress()">
-                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
-                                            <i class="fas fa-font text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i><br><span class="font-medium dark:text-gray-300">Text Only</span>
+                                        <input type="radio" name="logoType" value="Monogram" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-800 relative shadow-sm hover:shadow-md">
+                                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                                            <i class="fas fa-bold text-4xl mb-3 text-gray-400 dark:text-gray-500 group-hover:text-blue-500 transition-colors"></i>
+                                            <span class="font-bold text-gray-800 dark:text-gray-200 block text-base mb-1" data-i18n="lt_monogram">Monogram</span>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400" data-i18n="lt_monogram_desc">အက္ခရာအခြေပြု</span>
+                                            <button type="button" onclick="openLogoModal(event, 'Monogram')" class="mt-4 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600 px-4 py-2 rounded-full z-20 relative transition-colors shadow-sm w-full">
+                                                <i class="fas fa-images mr-1"></i> နမူနာကြည့်ရန်
+                                            </button>
                                         </div>
                                     </label>
+
+                                    <!-- 3. Pictorial Mark -->
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="logoType" value="Pictorial" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-800 relative shadow-sm hover:shadow-md">
+                                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                                            <i class="fab fa-apple text-4xl mb-3 text-gray-400 dark:text-gray-500 group-hover:text-blue-500 transition-colors"></i>
+                                            <span class="font-bold text-gray-800 dark:text-gray-200 block text-base mb-1" data-i18n="lt_pictorial">Pictorial Mark</span>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400" data-i18n="lt_pictorial_desc">ပုံသင်္ကေတ</span>
+                                            <button type="button" onclick="openLogoModal(event, 'Pictorial')" class="mt-4 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600 px-4 py-2 rounded-full z-20 relative transition-colors shadow-sm w-full">
+                                                <i class="fas fa-images mr-1"></i> နမူနာကြည့်ရန်
+                                            </button>
+                                        </div>
+                                    </label>
+
+                                    <!-- 4. Combination Mark -->
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="logoType" value="Combination" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-800 relative shadow-sm hover:shadow-md">
+                                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                                            <i class="fas fa-icons text-4xl mb-3 text-gray-400 dark:text-gray-500 group-hover:text-blue-500 transition-colors"></i>
+                                            <span class="font-bold text-gray-800 dark:text-gray-200 block text-base mb-1" data-i18n="lt_combination">Combination</span>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400" data-i18n="lt_combination_desc">ပုံနှင့်စာတွဲလျက်</span>
+                                            <button type="button" onclick="openLogoModal(event, 'Combination')" class="mt-4 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600 px-4 py-2 rounded-full z-20 relative transition-colors shadow-sm w-full">
+                                                <i class="fas fa-images mr-1"></i> နမူနာကြည့်ရန်
+                                            </button>
+                                        </div>
+                                    </label>
+
+                                    <!-- 5. Emblem -->
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="logoType" value="Emblem" class="selection-input hidden" onclick="saveProgress()">
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-800 relative shadow-sm hover:shadow-md">
+                                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                                            <i class="fas fa-shield-alt text-4xl mb-3 text-gray-400 dark:text-gray-500 group-hover:text-blue-500 transition-colors"></i>
+                                            <span class="font-bold text-gray-800 dark:text-gray-200 block text-base mb-1" data-i18n="lt_emblem">Emblem</span>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400" data-i18n="lt_emblem_desc">တံဆိပ်ဝိုင်းပုံစံ</span>
+                                            <button type="button" onclick="openLogoModal(event, 'Emblem')" class="mt-4 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600 px-4 py-2 rounded-full z-20 relative transition-colors shadow-sm w-full">
+                                                <i class="fas fa-images mr-1"></i> နမူနာကြည့်ရန်
+                                            </button>
+                                        </div>
+                                    </label>
+
+                                    <!-- 6. Mascot -->
                                     <label class="cursor-pointer group">
                                         <input type="radio" name="logoType" value="Mascot" class="selection-input hidden" onclick="saveProgress()">
-                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 text-center text-sm hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
-                                            <i class="fas fa-user-astronaut text-2xl mb-2 text-gray-400 dark:text-gray-500 group-hover:text-blue-500"></i><br><span class="font-medium dark:text-gray-300">Mascot</span>
+                                        <div class="border-2 border-gray-200 dark:border-gray-600 rounded-xl p-5 text-center transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-800 relative shadow-sm hover:shadow-md">
+                                            <i class="fas fa-check-circle check-icon text-blue-600 dark:text-blue-400 absolute top-3 right-3 hidden text-xl"></i>
+                                            <i class="fas fa-user-astronaut text-4xl mb-3 text-gray-400 dark:text-gray-500 group-hover:text-blue-500 transition-colors"></i>
+                                            <span class="font-bold text-gray-800 dark:text-gray-200 block text-base mb-1" data-i18n="lt_mascot">Mascot</span>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400" data-i18n="lt_mascot_desc">အရုပ်ပုံစံ</span>
+                                            <button type="button" onclick="openLogoModal(event, 'Mascot')" class="mt-4 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-gray-700 hover:bg-blue-200 dark:hover:bg-gray-600 px-4 py-2 rounded-full z-20 relative transition-colors shadow-sm w-full">
+                                                <i class="fas fa-images mr-1"></i> နမူနာကြည့်ရန်
+                                            </button>
                                         </div>
                                     </label>
                                 </div>
@@ -768,6 +845,35 @@
             </div>
         </div>
 
+        <!-- NEW: Logo Examples Modal -->
+        <div id="logoExampleModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center z-[60] p-4 transition-opacity">
+            <div class="bg-white dark:bg-dark-card rounded-2xl max-w-2xl w-full p-6 md:p-8 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+                
+                <div class="flex justify-between items-center mb-4 border-b border-gray-100 dark:border-gray-700 pb-4">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+                        <i class="fas fa-images mr-3 text-blue-500"></i> <span id="modalLogoTypeName">Wordmark</span>
+                    </h3>
+                    <button type="button" onclick="closeLogoModal()" class="text-gray-400 hover:text-red-500 bg-gray-100 hover:bg-red-50 dark:bg-gray-800 dark:hover:bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+
+                <div class="overflow-y-auto custom-scrollbar flex-1 pb-4 pr-2">
+                    <p id="modalLogoDesc" class="text-gray-600 dark:text-gray-300 mb-6 text-sm md:text-base leading-relaxed"></p>
+                    
+                    <div id="modalLogoImages" class="grid grid-cols-2 md:grid-cols-3 gap-4 place-items-center">
+                        <!-- JS injects images here -->
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-gray-100 dark:border-gray-700 mt-auto">
+                    <button type="button" onclick="closeLogoModal()" class="w-full bg-blue-50 hover:bg-blue-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-blue-600 dark:text-blue-400 font-bold text-base py-3.5 rounded-xl transition shadow-sm">
+                        ပိတ်မည် (Close)
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Overlay for PDF Generation (Hidden by default) -->
         <div id="pdfOverlay" class="fixed inset-0 bg-white z-[9999] hidden p-10 font-sans">
             <!-- This container will be populated and printed -->
@@ -787,6 +893,101 @@
         // Constants
         const TELEGRAM_USERNAME = "matgteams";
         const VIBER_PHONE = "959425287090";
+
+        // Logo Data Dictionary for Modal
+        const logoExamples = {
+            'Wordmark': {
+                name: 'Wordmark (စာသားအခြေပြု)',
+                desc: 'ကုမ္ပဏီအမည်ကိုသာ စာလုံးဒီဇိုင်းဆန်းဆန်းဖြင့် သီးသန့်ရေးဆွဲထားသော လိုဂိုအမျိုးအစားဖြစ်ပါသည်။ (ဥပမာ - Google, Coca-Cola, Disney)',
+                images: [
+                    'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
+                    'https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg',
+                    'https://upload.wikimedia.org/wikipedia/commons/a/a4/Disney_wordmark.svg'
+                ]
+            },
+            'Monogram': {
+                name: 'Monogram (အက္ခရာအခြေပြု)',
+                desc: 'ကုမ္ပဏီအမည်၏ ရှေ့ဆုံးအက္ခရာ (Letters/Initials) များကိုသာ အသုံးပြု၍ ရေးဆွဲထားသော လိုဂိုအမျိုးအစားဖြစ်ပါသည်။ (ဥပမာ - HBO, IBM, NASA)',
+                images: [
+                    'https://blog.logomyway.com/wp-content/uploads/2022/01/HBO-logo-blue.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg',
+                    'https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg'
+                ]
+            },
+            'Pictorial': {
+                name: 'Pictorial Mark (ပုံသင်္ကေတ)',
+                desc: 'ကုမ္ပဏီကို ကိုယ်စားပြုသော ရုပ်ပုံ၊ သင်္ကေတ တစ်ခုတည်းကိုသာ အသုံးပြုထားသော ရှင်းလင်းသည့် လိုဂိုဖြစ်ပါသည်။ (ဥပမာ - Apple, NBC, Mozilla)',
+                images: [
+                    'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg',
+                    'https://upload.wikimedia.org/wikipedia/commons/e/ec/NBC_Peacock_%282022%3B_outlined%29.svg',
+                    'https://blog.mozilla.org/opendesign/files/2018/07/firefox-logo.png'
+                ]
+            },
+            'Combination': {
+                name: 'Combination Mark (ပုံနှင့်စာတွဲလျက်)',
+                desc: 'ရုပ်ပုံ/သင်္ကေတ နှင့် စာသား (Brand Name) ကို တွဲဖက်အသုံးပြုထားသော လက်ရှိတွင် အသုံးအများဆုံး လိုဂိုအမျိုးအစားဖြစ်ပါသည်။',
+                images: [
+                    'https://pngimg.com/d/kfc_PNG21.png',
+                    'https://cdn.logojoy.com/wp-content/uploads/20230905134747/Lays-Logo-600x338.png',
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png'
+                ]
+            },
+            'Emblem': {
+                name: 'Emblem (တံဆိပ်ဝိုင်းပုံစံ)',
+                desc: 'စာသားများကို တံဆိပ်၊ ဒိုင်းလွှား စသည့် ပုံစံများအတွင်း ထည့်သွင်းရေးဆွဲထားသော လိုဂိုဖြစ်ပါသည်။ (ကျောင်းများ၊ ကော်ဖီဆိုင်များနှင့် အဖွဲ့အစည်းများတွင် အသုံးများသည်)',
+                images: [
+                    'https://upload.wikimedia.org/wikipedia/en/d/d3/Starbucks_Corporation_Logo_2011.svg',
+                    'https://upload.wikimedia.org/wikipedia/commons/9/90/Paramount_Pictures_Corporation_logo.svg',
+                    'https://upload.wikimedia.org/wikipedia/commons/d/d2/Warner_Bros._%282019%29_logo.svg'
+                ]
+            },
+            'Mascot': {
+                name: 'Mascot (အရုပ်ပုံစံ)',
+                desc: 'ကိုယ်စားပြု ကာတွန်းဇာတ်ကောင်၊ အရုပ်များကို အဓိက အသုံးပြုထားသော လိုဂိုဖြစ်ပါသည်။ (စားသောက်ဆိုင်များ၊ ဂိမ်းများနှင့် လူငယ်ကြိုက် Brand များတွင် သုံးလေ့ရှိသည်)',
+                images: [
+                    'https://www.logodesignteam.com/blog/wp-content/uploads/2019/02/julio-pringles-mascot-1024x576.png',
+                    'https://static.wikia.nocookie.net/logopedia/images/a/a7/Mr._Muscle_-_Logo_3.svg/revision/latest/scale-to-width-down/300?cb=20231030231049',
+                    'https://creativereview.imgix.net/uploads/2011/03/mman19902000_0.jpg?auto=compress,format&crop=faces,entropy,edges&fit=crop&q=60&w=569&h=669'
+                ]
+            }
+        };
+
+        // Modal Control Functions
+        function openLogoModal(e, type) {
+            // Prevent triggering the radio button click
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const data = logoExamples[type];
+            if(!data) return;
+            
+            document.getElementById('modalLogoTypeName').innerText = data.name;
+            document.getElementById('modalLogoDesc').innerText = data.desc;
+            
+            const imgContainer = document.getElementById('modalLogoImages');
+            imgContainer.innerHTML = ''; // Clear previous images
+            
+            data.images.forEach(src => {
+                imgContainer.innerHTML += `
+                    <div class="bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-4 w-full h-28 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+                        <img src="${src}" alt="" class="max-w-full max-h-full object-contain filter dark:drop-shadow-md">
+                    </div>
+                `;
+            });
+            
+            document.getElementById('logoExampleModal').classList.remove('hidden');
+        }
+
+        function closeLogoModal() {
+            document.getElementById('logoExampleModal').classList.add('hidden');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('logoExampleModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLogoModal();
+            }
+        });
 
         // --- Localization Data ---
         const translations = {
@@ -826,6 +1027,12 @@
                 'lbl_slogan': 'ဆောင်ပုဒ် (Slogan/Tagline)',
                 'ph_slogan': 'ရှိပါက ထည့်သွင်းပေးပါ',
                 'lbl_logo_type': 'လိုဂို အမျိုးအစား (Logo Type)',
+                'lt_wordmark': 'Wordmark', 'lt_wordmark_desc': 'စာသားအခြေပြု',
+                'lt_monogram': 'Monogram', 'lt_monogram_desc': 'အက္ခရာအခြေပြု',
+                'lt_pictorial': 'Pictorial Mark', 'lt_pictorial_desc': 'ပုံသင်္ကေတ',
+                'lt_combination': 'Combination', 'lt_combination_desc': 'ပုံနှင့်စာတွဲလျက်',
+                'lt_emblem': 'Emblem', 'lt_emblem_desc': 'တံဆိပ်ဝိုင်းပုံစံ',
+                'lt_mascot': 'Mascot', 'lt_mascot_desc': 'အရုပ်ပုံစံ',
                 'lbl_target': 'ပစ်မှတ်ထားသော Customer (Target Audience)',
                 'ph_target': 'ဥပမာ - လူငယ်များ၊ ရုံးဝန်ထမ်းများ၊ အိမ်ရှင်မများ...',
                 'lbl_budget': 'ခန့်မှန်း ဘတ်ဂျက် (Estimated Budget)',
@@ -900,6 +1107,12 @@
                 'lbl_slogan': 'Slogan/Tagline',
                 'ph_slogan': 'If any',
                 'lbl_logo_type': 'Logo Type',
+                'lt_wordmark': 'Wordmark', 'lt_wordmark_desc': 'Text-based',
+                'lt_monogram': 'Monogram', 'lt_monogram_desc': 'Letter-based',
+                'lt_pictorial': 'Pictorial Mark', 'lt_pictorial_desc': 'Icon-based',
+                'lt_combination': 'Combination', 'lt_combination_desc': 'Icon + Text',
+                'lt_emblem': 'Emblem', 'lt_emblem_desc': 'Badge/Crest',
+                'lt_mascot': 'Mascot', 'lt_mascot_desc': 'Character-based',
                 'lbl_target': 'Target Audience',
                 'ph_target': 'e.g. Youth, Office Workers, Housewives...',
                 'lbl_budget': 'Estimated Budget',
@@ -1194,7 +1407,7 @@
             const isEmail = document.getElementById('chk-email').checked;
             const isMaint = document.getElementById('chk-maint').checked;
 
-            const moods = Array.from(document.querySelectorAll('.mood-btn.active')).map(btn => btn.innerText).join(', ') || "Not Selected";
+            const moods = Array.from(document.querySelectorAll('.mood-btn.active')).map(btn => btn.innerText.trim()).join(', ') || "Not Selected";
             const color1 = document.getElementById('primaryColor').value;
             const color2 = document.getElementById('secondaryColor').value;
 
@@ -1323,7 +1536,7 @@ Form generated by Creative Studio`;
             const isMaint = document.getElementById('chk-maint').checked;
 
             // Design Prefs
-            const moods = Array.from(document.querySelectorAll('.mood-btn.active')).map(btn => btn.innerText).join(', ') || "-";
+            const moods = Array.from(document.querySelectorAll('.mood-btn.active')).map(btn => btn.innerText.trim()).join(', ') || "-";
             const color1 = document.getElementById('primaryColor').value;
             const color2 = document.getElementById('secondaryColor').value;
             
